@@ -3,6 +3,7 @@ import type { GridPosition, PanelDescriptor } from '../export/types';
 
 const SELECTORS = {
   panelRoots: ['[data-viz-panel-id]', '[data-panelid]', '[data-panel-id]'],
+  legacyPanelRoots: ['[data-viz-panel-key]'],
   loading: [
     '[aria-label*="Loading"]',
     '[data-testid*="loading" i]',
@@ -12,6 +13,22 @@ const SELECTORS = {
   error: ['[aria-label*="Panel error" i]', '[data-testid*="panel error" i]', '.panel-alert'],
   title: ['[data-testid*="Panel header" i]', 'h2', '[role="heading"]'],
 } as const;
+
+function findPanelRootElements(root: ParentNode): HTMLElement[] {
+  const primary = new Set<HTMLElement>();
+  for (const selector of SELECTORS.panelRoots) {
+    root.querySelectorAll<HTMLElement>(selector).forEach((element) => primary.add(element));
+  }
+  if (primary.size > 0) {
+    return Array.from(primary);
+  }
+
+  const legacy = new Set<HTMLElement>();
+  for (const selector of SELECTORS.legacyPanelRoots) {
+    root.querySelectorAll<HTMLElement>(selector).forEach((element) => legacy.add(element));
+  }
+  return Array.from(legacy);
+}
 
 function firstAttribute(element: HTMLElement, names: readonly string[]): string | undefined {
   for (const name of names) {
@@ -60,20 +77,13 @@ function rectToGridPosition(element: HTMLElement, scrollContainer?: HTMLElement)
 /** All version-sensitive Grafana DOM access is isolated in this adapter. */
 export class GrafanaAdapter {
   discoverMaterializedPanels(root: ParentNode = document, scrollContainer?: HTMLElement): PanelDescriptor[] {
-    const unique = new Set<HTMLElement>();
-    for (const selector of SELECTORS.panelRoots) {
-      root.querySelectorAll<HTMLElement>(selector).forEach((element) => unique.add(element));
-    }
-
-    return Array.from(unique)
+    return findPanelRootElements(root)
       .map((element) => this.describeElement(element, scrollContainer ?? this.findScrollableAncestor(element)))
       .sort((left, right) => left.gridPosition.y - right.gridPosition.y || left.gridPosition.x - right.gridPosition.x);
   }
 
   findDashboardScrollContainer(root: ParentNode = document): HTMLElement | undefined {
-    const firstPanel = SELECTORS.panelRoots
-      .map((selector) => root.querySelector<HTMLElement>(selector))
-      .find((element): element is HTMLElement => Boolean(element));
+    const firstPanel = findPanelRootElements(root)[0];
     if (firstPanel) {
       const ancestor = this.findScrollableAncestor(firstPanel);
       if (ancestor) {
@@ -179,12 +189,14 @@ export class GrafanaAdapter {
   }
 
   private describeElement(element: HTMLElement, scrollContainer?: HTMLElement): PanelDescriptor {
-    const rawPanelPathId = firstAttribute(element, ['data-viz-panel-id']);
+    const rawPanelPathId = firstAttribute(element, ['data-viz-panel-id', 'data-viz-panel-key']);
     const rawId = normalizePanelId(rawPanelPathId ?? firstAttribute(element, ['data-panelid', 'data-panel-id']));
     const titleElement = SELECTORS.title.map((selector) => element.querySelector<HTMLElement>(selector)).find(Boolean);
     const title = (titleElement?.innerText ?? titleElement?.textContent ?? '').trim();
     return {
-      id: rawId ?? `dom-${Math.round(element.getBoundingClientRect().top)}`,
+      id:
+        rawId ??
+        `dom-${Math.round(element.getBoundingClientRect().top)}-${Math.round(element.getBoundingClientRect().left)}`,
       title: title || (rawId ? `Panel ${rawId}` : 'Untitled panel'),
       element,
       gridPosition: rectToGridPosition(element, scrollContainer),

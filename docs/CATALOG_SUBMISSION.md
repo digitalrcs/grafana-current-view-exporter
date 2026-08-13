@@ -26,12 +26,12 @@ Submit through the Grafana Cloud organization administrator interface:
 
 The [official submission guide](https://grafana.com/developers/plugin-tools/publish-a-plugin/publish-a-plugin) describes the automated validation and manual code/test review.
 
-## Submission fields for v1.1.0
+## Submission fields for v1.1.1
 
 - **Plugin ID:** `digitalrcs-currentviewexporter-app`
 - **OS & Architecture:** Single (frontend-only; no binaries)
-- **Plugin ZIP:** GitHub release asset named `digitalrcs-currentviewexporter-app-1.1.0.zip`
-- **Source code:** `https://github.com/digitalrcs/grafana-current-view-exporter/tree/v1.1.0`
+- **Plugin ZIP:** GitHub release asset named `digitalrcs-currentviewexporter-app-1.1.1.zip`
+- **Source code:** `https://github.com/digitalrcs/grafana-current-view-exporter/tree/v1.1.1`
 - **License:** Apache-2.0
 - **Provisioning provided:** Yes
 - **Signature request:** Community

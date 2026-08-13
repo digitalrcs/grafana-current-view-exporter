@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.1 - 2026-08-12
+
+- Support Grafana 12.4 and 13.0 panel DOM identities through the legacy `data-viz-panel-key` fallback.
+- Prefer modern `data-viz-panel-id` roots when both generations of panel identity are present, preventing duplicate snapshots.
+- Make the E2E scroll-restoration assertion follow the actual scrollable panel ancestor across Grafana versions.
+
 ## 1.1.0 - 2026-08-12
 
 - Add progressive whole-dashboard capture from the current browser session.

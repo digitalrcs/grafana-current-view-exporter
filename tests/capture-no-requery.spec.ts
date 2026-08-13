@@ -42,16 +42,29 @@ test('progressively captures the entire dashboard, restores scroll, and download
   await panel.clickOnMenuItem('Export current dashboard', { parentItem: 'Extensions' });
   await expect(page.getByTestId('current-view-export-dialog')).toBeVisible();
 
-  const scrollContainer = page.getByTestId('data-testid DashboardEditPaneSplitter body container');
-  await scrollContainer.evaluate((element) => {
-    element.scrollTop = 150;
+  const scrollContainer = page
+    .locator('[data-viz-panel-id], [data-panelid], [data-panel-id], [data-viz-panel-key]')
+    .first()
+    .locator('xpath=..');
+  const originalScrollTop = await scrollContainer.evaluate((panelParent) => {
+    let element: HTMLElement | null = panelParent;
+    while (element) {
+      const overflowY = window.getComputedStyle(element).overflowY;
+      if ((overflowY === 'auto' || overflowY === 'scroll') && element.scrollHeight > element.clientHeight) {
+        element.scrollTop = Math.min(150, element.scrollHeight - element.clientHeight);
+        element.dataset.currentViewExporterTestScrollContainer = 'true';
+        return element.scrollTop;
+      }
+      element = element.parentElement;
+    }
+    throw new Error('Dashboard scroll container not found from a materialized panel.');
   });
-  const originalScrollTop = await scrollContainer.evaluate((element) => element.scrollTop);
+  const dashboardScrollContainer = page.locator('[data-current-view-exporter-test-scroll-container="true"]');
 
   await page.getByRole('button', { name: 'Capture entire dashboard' }).click();
   await expect(page.getByTestId('capture-state')).toHaveText('CAPTURED', { timeout: 60_000 });
   await expect(page.getByRole('status', { name: 'PNG ready' })).toContainText('panels');
-  await expect.poll(() => scrollContainer.evaluate((element) => element.scrollTop)).toBe(originalScrollTop);
+  await expect.poll(() => dashboardScrollContainer.evaluate((element) => element.scrollTop)).toBe(originalScrollTop);
 
   if (process.env.CAPTURE_CATALOG_SCREENSHOT === '1') {
     await page.getByRole('dialog', { name: 'Export Current Dashboard' }).screenshot({

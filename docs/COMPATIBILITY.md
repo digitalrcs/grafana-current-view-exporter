@@ -32,7 +32,7 @@ The self-contained dashboard exercises Grafana Time series, Stat, Bar gauge, and
 
 ## Known limitations
 
-- PNG is the only implemented output format in v1.1.0.
+- PNG is the only implemented output format in the current release.
 - Browser canvas limits vary. The exporter conservatively limits the final image to 16,384 pixels per dimension and 64 million pixels, scaling uniformly when needed.
 - Auto-refresh is not paused through an unsupported/private API.
 - Lazy materialization may cause Grafana's first normal query for a panel that was not previously initialized.

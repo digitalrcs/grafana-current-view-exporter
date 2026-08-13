@@ -23,7 +23,7 @@ interface ExportResult {
 }
 
 const STABILIZATION_MS = 400;
-const EXPORTER_BUILD = '1.1.0';
+const EXPORTER_BUILD = '1.1.1';
 
 function safeFilename(value: string): string {
   const sanitized = value

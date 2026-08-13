@@ -25,6 +25,22 @@ describe('GrafanaAdapter', () => {
     expect(new GrafanaAdapter().discoverMaterializedPanels().map((panel) => panel.id)).toEqual(['1', '2']);
   });
 
+  test('falls back to the panel key used by older Grafana versions', () => {
+    const main = document.createElement('main');
+    const panel = document.createElement('div');
+    panel.dataset.vizPanelKey = 'panel-7';
+    panel.innerHTML = '<h2>Legacy panel</h2>';
+    setRect(panel, { top: 100, left: 20, width: 800, height: 300 });
+    main.append(panel);
+    document.body.append(main);
+
+    const discovered = new GrafanaAdapter().discoverMaterializedPanels();
+    expect(discovered).toHaveLength(1);
+    expect(discovered[0].id).toBe('7');
+    expect(discovered[0].title).toBe('Legacy panel');
+    expect(discovered[0].element).toBe(panel);
+  });
+
   test('uses dashboard scroll-container coordinates for stable composition positions', () => {
     const scrollContainer = document.createElement('main');
     Object.defineProperties(scrollContainer, {
