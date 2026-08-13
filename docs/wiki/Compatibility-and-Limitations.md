@@ -9,7 +9,7 @@
 ## Implemented
 
 - Current-panel PNG
-- Entire-dashboard PNG
+- Dashboard PNG
 - Progressive scrolling
 - Layout-preserving bounded composition
 - Cancellation and scroll restoration

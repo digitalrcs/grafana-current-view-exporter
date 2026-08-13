@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.0 - 2026-08-13
+
+- Replace the verbose export dialog with compact Help, Cancel, Capture current panel, and Capture dashboard controls.
+- Move capture behavior, materialized-panel details, and exporter build information behind the Help control.
+- Keep capture progress, failure details, and PNG download actions contextual to the active export.
+- Add current catalog screenshots for the compact, Help-expanded, and successful dashboard-capture states.
+
 ## 1.1.1 - 2026-08-12
 
 - Support Grafana 12.4 and 13.0 panel DOM identities through the legacy `data-viz-panel-key` fallback.

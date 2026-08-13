@@ -8,7 +8,16 @@
 
 Its defining constraint is simple: capture the visual state Grafana already rendered. The exporter does not call Grafana render endpoints, reload the dashboard, refresh it, or invoke datasource APIs directly merely to create an image.
 
-![Completed whole-dashboard PNG capture](src/img/export-entire-dashboard.png)
+![Compact dashboard export controls](src/img/export-dialog-compact.png)
+
+<details>
+<summary>More catalog screenshots</summary>
+
+![Capture behavior and dashboard details](src/img/export-dialog-help.png)
+
+![Completed four-panel dashboard PNG capture](src/img/export-dashboard-ready.png)
+
+</details>
 
 ## Features
 
@@ -61,7 +70,7 @@ See [Installation](docs/INSTALLATION.md) for packaged ZIP and container instruct
 1. Open a dashboard and wait for the panels you care about to finish rendering.
 2. Open any panel menu.
 3. Choose **Extensions > Export current dashboard**.
-4. Select **Capture current panel** or **Capture entire dashboard**.
+4. Select **Capture current panel** or **Capture dashboard**. Use the Help icon for behavior and current-dashboard details.
 5. Download the PNG when the state reaches `CAPTURED`.
 
 ## Development

@@ -1,6 +1,6 @@
 {
   "name": "current-view-exporter",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Browser-local whole-dashboard PNG export for Grafana without render endpoints or deliberate datasource refreshes.",
   "scripts": {
     "build": "webpack -c ./.config/webpack/webpack.config.ts --env production",

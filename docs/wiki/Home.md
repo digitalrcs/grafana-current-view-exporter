@@ -4,6 +4,8 @@ Grafana Current View Exporter creates a PNG from the dashboard visual state alre
 
 It is designed for dashboards whose datasource queries are expensive or slow. Capturing an already-rendered panel does not call Grafana render endpoints, reload the dashboard, refresh it, or invoke datasource APIs directly.
 
+![Compact dashboard export controls](https://raw.githubusercontent.com/digitalrcs/grafana-current-view-exporter/main/src/img/export-dialog-compact.png)
+
 ## Start here
 
 - [Installation](Installation)

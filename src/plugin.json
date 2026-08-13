@@ -23,8 +23,16 @@
     ],
     "screenshots": [
       {
-        "name": "Completed whole-dashboard PNG capture",
-        "path": "img/export-entire-dashboard.png"
+        "name": "Compact dashboard export controls",
+        "path": "img/export-dialog-compact.png"
+      },
+      {
+        "name": "Capture behavior and current dashboard details",
+        "path": "img/export-dialog-help.png"
+      },
+      {
+        "name": "Completed four-panel dashboard PNG capture",
+        "path": "img/export-dashboard-ready.png"
       }
     ],
     "version": "%VERSION%",

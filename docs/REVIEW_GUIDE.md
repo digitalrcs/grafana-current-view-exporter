@@ -21,7 +21,7 @@ Wait for <http://localhost:3005/api/health>, then sign in at <http://localhost:3
 5. Select **Capture current panel** and confirm a PNG becomes ready.
 6. Close and reopen the exporter.
 7. Scroll the dashboard to a nonzero position.
-8. Select **Capture entire dashboard**.
+8. Select **Capture dashboard**.
 9. Confirm the progress report ends with four captured panels and zero failures.
 10. Confirm the dashboard returns to the original scroll position.
 11. Download the PNG and verify that it contains the Time series, Stat, Bar gauge, and Text panels in dashboard order.
