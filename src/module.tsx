@@ -15,21 +15,19 @@ function createExportModalBody(context: Readonly<PluginExtensionPanelContext>) {
   };
 }
 
-export const plugin = new AppPlugin<{}>()
-  .setRootPage(App)
-  .addLink<PluginExtensionPanelContext>({
-    title: 'Export current dashboard',
-    description: 'Capture the dashboard visual state already rendered in this browser session.',
-    targets: [PluginExtensionPoints.DashboardPanelMenu],
-    icon: 'download-alt',
-    onClick: (_event, { context, openModal }) => {
-      if (!context) {
-        return;
-      }
-      openModal({
-        title: 'Export Current Dashboard',
-        body: createExportModalBody(context),
-        width: 720,
-      });
-    },
-  });
+export const plugin = new AppPlugin<{}>().setRootPage(App).addLink<PluginExtensionPanelContext>({
+  title: 'Export current dashboard',
+  description: 'Capture the dashboard visual state already rendered in this browser session.',
+  targets: [PluginExtensionPoints.DashboardPanelMenu],
+  icon: 'download-alt',
+  onClick: (_event, { context, openModal }) => {
+    if (!context) {
+      return;
+    }
+    openModal({
+      title: 'Export Current Dashboard',
+      body: createExportModalBody(context),
+      width: 560,
+    });
+  },
+});

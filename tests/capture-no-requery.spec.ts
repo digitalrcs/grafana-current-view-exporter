@@ -15,6 +15,11 @@ test('captures an already-rendered panel without another datasource query', asyn
   const panel = dashboardPage.getPanelByTitle('Current View Exporter - Time series');
   await panel.clickOnMenuItem('Export current dashboard', { parentItem: 'Extensions' });
   await expect(page.getByTestId('current-view-export-dialog')).toBeVisible();
+  await expect(page.getByTestId('capture-help')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Help' }).click();
+  await expect(page.getByTestId('capture-help')).toContainText('The exporter does not call a render endpoint');
+  await page.getByRole('button', { name: 'Hide help' }).click();
+  await expect(page.getByTestId('capture-help')).toHaveCount(0);
 
   const datasourceRequests: string[] = [];
   page.on('request', (request) => {
@@ -61,7 +66,7 @@ test('progressively captures the entire dashboard, restores scroll, and download
   });
   const dashboardScrollContainer = page.locator('[data-current-view-exporter-test-scroll-container="true"]');
 
-  await page.getByRole('button', { name: 'Capture entire dashboard' }).click();
+  await page.getByRole('button', { name: 'Capture dashboard' }).click();
   await expect(page.getByTestId('capture-state')).toHaveText('CAPTURED', { timeout: 60_000 });
   await expect(page.getByRole('status', { name: 'PNG ready' })).toContainText('panels');
   await expect.poll(() => dashboardScrollContainer.evaluate((element) => element.scrollTop)).toBe(originalScrollTop);

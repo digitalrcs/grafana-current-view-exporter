@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import type { PluginExtensionPanelContext } from '@grafana/data';
-import { Alert, Button, Modal, Spinner } from '@grafana/ui';
+import { Alert, Button, IconButton, Modal, Spinner } from '@grafana/ui';
 import { CaptureEngine } from '../capture/CaptureEngine';
 import { DashboardCaptureSession } from '../export/DashboardCaptureSession';
 import { ObservablePanelStabilityDetector } from '../export/PanelStabilityDetector';
@@ -46,6 +46,7 @@ export default function ExportDialog({ context, onDismiss }: Props) {
   const [progress, setProgress] = useState<DashboardCaptureProgress>();
   const [result, setResult] = useState<ExportResult>();
   const [error, setError] = useState<string>();
+  const [showHelp, setShowHelp] = useState(false);
 
   useEffect(
     () => () => {
@@ -69,7 +70,7 @@ export default function ExportDialog({ context, onDismiss }: Props) {
   const captureCurrentPanel = async () => {
     const panel = adapter.findPanel(context);
     if (!panel?.element) {
-      setError('This panel is not materialized. Use Capture entire dashboard to visit and capture dashboard panels.');
+      setError('This panel is not materialized. Use Capture dashboard to visit and capture dashboard panels.');
       return;
     }
 
@@ -172,34 +173,41 @@ export default function ExportDialog({ context, onDismiss }: Props) {
   };
 
   const busy = ['MATERIALIZING', 'QUERY_RUNNING', 'RENDERING', 'STABILIZING', 'CAPTURING'].includes(status);
+  const showStatus = showHelp || busy || Boolean(error) || Boolean(result);
 
   return (
     <div data-testid="current-view-export-dialog">
-      <p>
-        Capture the current panel or progressively visit and compose the entire dashboard. The exporter does not call a
-        render endpoint, reload the dashboard, refresh it, or invoke a datasource API directly.
-      </p>
-      <Alert title="Whole-dashboard query behavior" severity="info">
-        Progressive scrolling can materialize lazy panels. Grafana may run an initial query for a panel that this
-        browser session had not loaded yet; the exporter does not explicitly requery already-loaded panels.
-      </Alert>
-      <dl>
-        <dt>Materialized panels discovered now</dt>
-        <dd>{panels.length}</dd>
-        <dt>Current panel</dt>
-        <dd>{selectedPanel?.title ?? context.title}</dd>
-        <dt>State</dt>
-        <dd data-testid="capture-state">{status}</dd>
-        <dt>Exporter build</dt>
-        <dd>{EXPORTER_BUILD}</dd>
-      </dl>
+      {showHelp ? (
+        <Alert title="Capture help" severity="info" data-testid="capture-help" id="current-view-export-help">
+          <p>
+            <strong>Current panel</strong> captures only the rendered panel. <strong>Dashboard</strong> progressively
+            scrolls through the current dashboard and combines its panels into one PNG.
+          </p>
+          <p>
+            The exporter does not call a render endpoint, reload, refresh, or invoke datasource APIs. Grafana may run an
+            initial query when scrolling materializes a panel that was not already loaded.
+          </p>
+          <dl>
+            <dt>Materialized now</dt>
+            <dd>{panels.length}</dd>
+            <dt>Current panel</dt>
+            <dd>{selectedPanel?.title ?? context.title}</dd>
+            <dt>Exporter build</dt>
+            <dd>{EXPORTER_BUILD}</dd>
+          </dl>
+        </Alert>
+      ) : null}
+      {showStatus ? (
+        <p role="status" aria-live="polite">
+          {busy ? <Spinner inline /> : null} <span data-testid="capture-state">{status}</span>
+        </p>
+      ) : null}
       {progress ? (
         <p data-testid="dashboard-capture-progress">
           Discovered {progress.discoveredPanels}; captured {progress.capturedPanels}; failed {progress.failedPanels}
           {progress.currentPanel ? `; current: ${progress.currentPanel}` : ''}.
         </p>
       ) : null}
-      {busy ? <Spinner inline /> : null}
       {error ? (
         <Alert
           title={status === 'SKIPPED' ? 'Capture cancelled' : 'Capture failed'}
@@ -215,20 +223,22 @@ export default function ExportDialog({ context, onDismiss }: Props) {
         </Alert>
       ) : null}
       <Modal.ButtonRow>
-        <Button variant="secondary" fill="outline" onClick={onDismiss} disabled={busy}>
-          Close
+        <IconButton
+          name="question-circle"
+          tooltip={showHelp ? 'Hide help' : 'Help'}
+          aria-expanded={showHelp}
+          aria-controls="current-view-export-help"
+          onClick={() => setShowHelp((visible) => !visible)}
+        />
+        <Button variant="secondary" fill="outline" onClick={busy ? () => controllerRef.current?.abort() : onDismiss}>
+          {busy ? 'Cancel capture' : 'Cancel'}
         </Button>
-        {busy ? (
-          <Button variant="destructive" onClick={() => controllerRef.current?.abort()}>
-            Cancel capture
-          </Button>
-        ) : null}
         {!busy && !result ? (
           <Button variant="secondary" onClick={captureCurrentPanel}>
             Capture current panel
           </Button>
         ) : null}
-        {!busy && !result ? <Button onClick={captureEntireDashboard}>Capture entire dashboard</Button> : null}
+        {!busy && !result ? <Button onClick={captureEntireDashboard}>Capture dashboard</Button> : null}
         {result ? <Button onClick={download}>Download PNG</Button> : null}
       </Modal.ButtonRow>
     </div>

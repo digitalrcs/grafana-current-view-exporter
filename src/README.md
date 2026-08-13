@@ -17,7 +17,7 @@ Export the dashboard currently shown in your Grafana browser session as a PNG wi
 1. Wait for the dashboard panels to finish rendering.
 2. Open any panel menu.
 3. Select **Extensions > Export current dashboard**.
-4. Choose **Capture current panel** or **Capture entire dashboard**.
+4. Choose **Capture current panel** or **Capture dashboard**. Use the help icon for capture behavior and status details.
 5. Download the PNG.
 
 Progressive scrolling may cause Grafana's normal first query for a lazy panel that was never materialized in this browser session. The exporter never calls datasource APIs directly. Capture of an already-rendered panel is E2E-tested to cause zero `/api/ds/query` requests at the capture-button boundary.
