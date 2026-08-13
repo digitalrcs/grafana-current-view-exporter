@@ -6,11 +6,13 @@
 4. Select **Extensions > Export current dashboard**.
 5. Choose a capture mode.
 
+Select the Help icon for query behavior, the number of currently materialized panels, the selected panel, and the exporter build.
+
 ## Capture current panel
 
 Captures only the selected, currently materialized panel and prepares a PNG download. This path is E2E-tested to produce zero additional `/api/ds/query` requests after the panel is loaded.
 
-## Capture entire dashboard
+## Capture dashboard
 
 Progressively visits the dashboard from top to bottom, captures each materialized panel once, composes a layout-preserving PNG, and restores the original scroll position.
 

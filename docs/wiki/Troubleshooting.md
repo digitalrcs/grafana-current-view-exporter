@@ -9,7 +9,7 @@
 
 ## A panel is not included
 
-Only panels that exist in the current visual dashboard layout are exported. Hidden source panels are not invented from saved dashboard JSON. Use **Capture entire dashboard** to progressively visit lazy visible panels.
+Only panels that exist in the current visual dashboard layout are exported. Hidden source panels are not invented from saved dashboard JSON. Use **Capture dashboard** to progressively visit lazy visible panels.
 
 ## A capture is blank
 

@@ -2,7 +2,9 @@
 
 Export the dashboard currently shown in your Grafana browser session as a PNG without calling Grafana render endpoints, reloading the dashboard, or deliberately refreshing datasource queries.
 
-![Completed whole-dashboard PNG capture](https://raw.githubusercontent.com/digitalrcs/grafana-current-view-exporter/main/src/img/export-entire-dashboard.png)
+![Compact dashboard export controls](https://raw.githubusercontent.com/digitalrcs/grafana-current-view-exporter/main/src/img/export-dialog-compact.png)
+
+![Completed four-panel dashboard PNG capture](https://raw.githubusercontent.com/digitalrcs/grafana-current-view-exporter/main/src/img/export-dashboard-ready.png)
 
 ## What it does
 

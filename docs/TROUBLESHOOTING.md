@@ -10,7 +10,7 @@
 
 ## Capture says the panel is not materialized
 
-Use **Capture entire dashboard** to progressively visit materialized dashboard panels. **Capture current panel** still requires the selected panel root to be present in the DOM.
+Use **Capture dashboard** to progressively visit materialized dashboard panels. **Capture current panel** still requires the selected panel root to be present in the DOM.
 
 ## The final PNG is smaller than the dashboard's measured size
 

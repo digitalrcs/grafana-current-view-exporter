@@ -9,6 +9,13 @@ For a first public submission:
 3. Open **Org Settings > My Plugins > Submit New Plugin**.
 4. Submit the release ZIP URL, SHA1, tagged source URL, and reviewer guidance.
 
+For `v1.2.0`, use the immutable URLs and testing guidance in the repository's [catalog submission guide](https://github.com/digitalrcs/grafana-current-view-exporter/blob/main/docs/CATALOG_SUBMISSION.md).
+
+- Release: <https://github.com/digitalrcs/grafana-current-view-exporter/releases/tag/v1.2.0>
+- Plugin ZIP: <https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.0/digitalrcs-currentviewexporter-app-1.2.0.zip>
+- SHA1 file: <https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.0/digitalrcs-currentviewexporter-app-1.2.0.zip.sha1>
+- Tagged source: <https://github.com/digitalrcs/grafana-current-view-exporter/tree/v1.2.0>
+
 Grafana reviews public plugins before granting a signature level. After Community approval, create a `plugins:write` access-policy token, save it only as the GitHub secret `GRAFANA_ACCESS_POLICY_TOKEN`, enable the repository variable `GRAFANA_PUBLIC_SIGNING_ENABLED`, and tag the next release.
 
 See the repository's [catalog submission guide](https://github.com/digitalrcs/grafana-current-view-exporter/blob/main/docs/CATALOG_SUBMISSION.md) for form-ready text.
