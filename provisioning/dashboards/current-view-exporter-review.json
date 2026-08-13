@@ -1,0 +1,118 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "exporter-testdata" },
+      "fieldConfig": { "defaults": { "color": { "mode": "palette-classic-by-name" } }, "overrides": [] },
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 0 },
+      "id": 1,
+      "options": {
+        "legend": { "calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true },
+        "tooltip": { "hideZeros": false, "mode": "multi", "sort": "none" }
+      },
+      "targets": [
+        {
+          "csvContent": "Time,Requests,Errors\n2026-08-12T12:00:00Z,920,12\n2026-08-12T12:05:00Z,1040,18\n2026-08-12T12:10:00Z,1180,15\n2026-08-12T12:15:00Z,1110,21\n2026-08-12T12:20:00Z,1290,16\n2026-08-12T12:25:00Z,1380,24\n2026-08-12T12:30:00Z,1320,19\n2026-08-12T12:35:00Z,1460,22",
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "exporter-testdata" },
+          "refId": "A",
+          "scenarioId": "csv_content"
+        }
+      ],
+      "title": "Current View Exporter - Time series",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "exporter-testdata" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "red", "value": 1400 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "id": 2,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "Requests", "values": false },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "csvContent": "Time,Requests\n2026-08-12T12:00:00Z,920\n2026-08-12T12:10:00Z,1180\n2026-08-12T12:20:00Z,1290\n2026-08-12T12:30:00Z,1320\n2026-08-12T12:35:00Z,1460",
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "exporter-testdata" },
+          "refId": "A",
+          "scenarioId": "csv_content"
+        }
+      ],
+      "title": "Current View Exporter - Stat",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "exporter-testdata" },
+      "fieldConfig": { "defaults": { "color": { "mode": "continuous-GrYlRd" }, "min": 0 }, "overrides": [] },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+      "id": 3,
+      "options": {
+        "displayMode": "gradient",
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "targets": [
+        {
+          "csvContent": "Service,Latency\nAPI,182\nSearch,264\nDatabase,138\nQueue,91",
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "exporter-testdata" },
+          "refId": "A",
+          "scenarioId": "csv_content"
+        }
+      ],
+      "title": "Current View Exporter - Bar gauge",
+      "type": "bargauge"
+    },
+    {
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "exporter-testdata" },
+      "gridPos": { "h": 6, "w": 24, "x": 0, "y": 16 },
+      "id": 4,
+      "options": {
+        "content": "## Browser-local dashboard export\n\nThe exporter captures panel images from this browser session, stores compressed PNG snapshots, composes the visible dashboard layout, and restores the original scroll position. It does not call Grafana render endpoints or datasource APIs.",
+        "mode": "markdown"
+      },
+      "targets": [],
+      "title": "How browser-local capture works",
+      "type": "text"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 42,
+  "tags": ["current-view-exporter", "review", "testdata"],
+  "templating": { "list": [] },
+  "time": { "from": "2026-08-12T12:00:00.000Z", "to": "2026-08-12T12:40:00.000Z" },
+  "timepicker": {},
+  "timezone": "utc",
+  "title": "Current View Exporter Review",
+  "uid": "current-view-exporter-review",
+  "version": 1,
+  "weekStart": ""
+}

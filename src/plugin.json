@@ -1,0 +1,55 @@
+{
+  "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
+  "type": "app",
+  "name": "Grafana Current View Exporter",
+  "id": "digitalrcs-currentviewexporter-app",
+  "preload": true,
+  "info": {
+    "keywords": ["dashboard", "export", "png", "snapshot", "browser"],
+    "description": "Export the current dashboard as a browser-local PNG without calling render endpoints or deliberately refreshing datasource queries.",
+    "author": {
+      "name": "DigitalRCS",
+      "url": "https://www.digitalrcs.com"
+    },
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "links": [
+      { "name": "DigitalRCS", "url": "https://www.digitalrcs.com" },
+      { "name": "Documentation", "url": "https://github.com/digitalrcs/grafana-current-view-exporter/wiki" },
+      { "name": "Source", "url": "https://github.com/digitalrcs/grafana-current-view-exporter" },
+      { "name": "Issues", "url": "https://github.com/digitalrcs/grafana-current-view-exporter/issues" }
+    ],
+    "screenshots": [
+      {
+        "name": "Completed whole-dashboard PNG capture",
+        "path": "img/export-entire-dashboard.png"
+      }
+    ],
+    "version": "%VERSION%",
+    "updated": "%TODAY%"
+  },
+  "includes": [
+    {
+      "type": "page",
+      "name": "Current View Exporter",
+      "path": "/a/%PLUGIN_ID%/",
+      "addToNav": true,
+      "defaultNav": true
+    }
+  ],
+  "extensions": {
+    "addedLinks": [
+      {
+        "title": "Export current dashboard",
+        "description": "Capture the dashboard visual state already rendered in this browser session.",
+        "targets": ["grafana/dashboard/panel/menu"]
+      }
+    ]
+  },
+  "dependencies": {
+    "grafanaDependency": ">=12.4.0 <14.0.0",
+    "plugins": []
+  }
+}

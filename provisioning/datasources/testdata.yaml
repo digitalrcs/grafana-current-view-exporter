@@ -1,0 +1,7 @@
+apiVersion: 1
+
+datasources:
+  - name: Exporter TestData
+    type: testdata
+    uid: exporter-testdata
+    isDefault: true

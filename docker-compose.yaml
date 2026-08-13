@@ -1,0 +1,14 @@
+services:
+  grafana:
+    extends:
+      file: .config/docker-compose-base.yaml
+      service: grafana
+    ports: !override
+      - 3005:3000/tcp
+    environment:
+      GF_LOG_FILTERS: plugin.digitalrcs-currentviewexporter-app:debug
+      GF_LOG_LEVEL: info
+      GF_DATAPROXY_LOGGING: 0
+      GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: digitalrcs-currentviewexporter-app
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin

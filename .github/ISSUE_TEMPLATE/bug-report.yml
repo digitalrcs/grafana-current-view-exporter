@@ -1,0 +1,58 @@
+name: Bug report
+description: Report a reproducible exporter defect.
+title: '[Bug]: '
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Do not attach production dashboard exports, query contents, or secrets. Use the private security process for vulnerabilities.
+  - type: input
+    id: grafana-version
+    attributes:
+      label: Grafana version
+    validations:
+      required: true
+  - type: input
+    id: plugin-version
+    attributes:
+      label: Plugin version
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and version
+    validations:
+      required: true
+  - type: dropdown
+    id: capture-mode
+    attributes:
+      label: Capture mode
+      options:
+        - Current panel
+        - Entire dashboard
+    validations:
+      required: true
+  - type: textarea
+    id: panel-types
+    attributes:
+      label: Panel types involved
+      description: List Grafana core or third-party panel names and versions.
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
