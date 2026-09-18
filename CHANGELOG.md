@@ -1,6 +1,11 @@
 # Changelog
 
-## 1.2.1 - 2026-09-18
+## 1.2.2 - 2026-09-18
+
+- Include all catalog-review fixes from the v1.2.1 source tag, whose release was blocked by dependency validation.
+- Update transitive fast-uri to 3.1.8 and js-yaml to 4.3.2 / 3.15.2 to resolve the five high-severity advisories reported by Grafana's release validator.
+
+## 1.2.1 - 2026-09-18 (source tag only; not published)
 
 - Declare an open-ended Grafana minimum version (`>=12.4.0`) for catalog compliance.
 - Fix dashboard capture when all panels fit on screen and no ancestor currently overflows.

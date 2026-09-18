@@ -26,14 +26,14 @@ Submit through the Grafana Cloud organization administrator interface:
 
 The [official submission guide](https://grafana.com/developers/plugin-tools/publish-a-plugin/publish-a-plugin) describes the automated validation and manual code/test review.
 
-## Submission fields for v1.2.1
+## Submission fields for v1.2.2
 
 - **Plugin ID:** `digitalrcs-currentviewexporter-app`
 - **OS & Architecture:** Single (frontend-only; no binaries)
-- **Release:** `https://github.com/digitalrcs/grafana-current-view-exporter/releases/tag/v1.2.1`
-- **Plugin ZIP:** `https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.1/digitalrcs-currentviewexporter-app-1.2.1.zip`
-- **SHA1 file:** `https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.1/digitalrcs-currentviewexporter-app-1.2.1.zip.sha1`
-- **Source code:** `https://github.com/digitalrcs/grafana-current-view-exporter/tree/v1.2.1`
+- **Release:** `https://github.com/digitalrcs/grafana-current-view-exporter/releases/tag/v1.2.2`
+- **Plugin ZIP:** `https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.2/digitalrcs-currentviewexporter-app-1.2.2.zip`
+- **SHA1 file:** `https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.2/digitalrcs-currentviewexporter-app-1.2.2.zip.sha1`
+- **Source code:** `https://github.com/digitalrcs/grafana-current-view-exporter/tree/v1.2.2`
 - **License:** Apache-2.0
 - **Provisioning provided:** Yes
 - **Signature request:** Community
@@ -43,7 +43,7 @@ The [official submission guide](https://grafana.com/developers/plugin-tools/publ
 
 > This is a frontend-only Grafana App Plugin with no external service or credentials. Clone the tagged public source, run `npm ci`, `npm run build`, and `docker compose up --build -d`. Open http://localhost:3005 and sign in with admin/admin. Open Dashboards > Current View Exporter Review. From the Current View Exporter - Time series panel menu, select Extensions > Export current dashboard. Test Capture current panel, then Capture dashboard. The latter should report four captured panels, restore the original dashboard scroll position, and download a nonempty PNG. Run `npm run e2e -- tests/capture-no-requery.spec.ts` to verify that capturing an already-rendered panel causes zero additional `/api/ds/query` requests at the capture-button boundary. No dashboard data or image is transmitted outside the browser.
 
-## Review fixes in v1.2.1
+## Review fixes in v1.2.2
 
 - The Grafana dependency is now `>=12.4.0`, with no upper bound.
 - Dashboard capture accepts a viewport with no vertical overflow. The adapter selects an ancestor of the dashboard panels, not an unrelated sidebar or dialog scrollbar, and supports document scrolling.
@@ -60,9 +60,9 @@ To run the same check locally:
 docker run --pull=always --rm \
   -e GITHUB_TOKEN \
   grafana/plugin-validator-cli \
-  -checksum https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.1/digitalrcs-currentviewexporter-app-1.2.1.zip.sha1 \
-  -sourceCodeUri https://github.com/digitalrcs/grafana-current-view-exporter/tree/v1.2.1 \
-  https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.1/digitalrcs-currentviewexporter-app-1.2.1.zip
+  -checksum https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.2/digitalrcs-currentviewexporter-app-1.2.2.zip.sha1 \
+  -sourceCodeUri https://github.com/digitalrcs/grafana-current-view-exporter/tree/v1.2.2 \
+  https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.2/digitalrcs-currentviewexporter-app-1.2.2.zip
 ```
 
 Set `GITHUB_TOKEN` in the shell without printing it so the provenance analyzer can query GitHub attestations.

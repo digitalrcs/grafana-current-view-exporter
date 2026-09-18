@@ -10,7 +10,7 @@
 
 - Current-panel PNG
 - Dashboard PNG
-- Single-pass capture for dashboards that fit on screen (fixed in v1.2.1)
+- Single-pass capture for dashboards that fit on screen (fixed in v1.2.2)
 - Progressive scrolling
 - Layout-preserving bounded composition
 - Cancellation and scroll restoration
