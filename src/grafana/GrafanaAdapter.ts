@@ -50,14 +50,20 @@ function normalizePanelId(rawId: string | undefined): string | undefined {
   return /^panel-(\d+)$/.exec(rawId)?.[1] ?? rawId;
 }
 
-function isScrollable(element: HTMLElement): boolean {
+function hasScrollLayout(element: HTMLElement): boolean {
   const overflowY = window.getComputedStyle(element).overflowY;
-  return (overflowY === 'auto' || overflowY === 'scroll') && element.scrollHeight > element.clientHeight;
+  return overflowY === 'auto' || overflowY === 'scroll';
+}
+
+function isScrollable(element: HTMLElement): boolean {
+  return hasScrollLayout(element) && element.scrollHeight > element.clientHeight;
 }
 
 function rectToGridPosition(element: HTMLElement, scrollContainer?: HTMLElement): GridPosition {
   const rect = element.getBoundingClientRect();
-  if (scrollContainer) {
+  // The document element's bounding rect moves with the page; subtracting it and
+  // adding scrollTop would count the document scroll twice.
+  if (scrollContainer && scrollContainer !== element.ownerDocument.scrollingElement) {
     const containerRect = scrollContainer.getBoundingClientRect();
     return {
       x: Math.round(rect.left - containerRect.left + scrollContainer.scrollLeft),
@@ -83,17 +89,36 @@ export class GrafanaAdapter {
   }
 
   findDashboardScrollContainer(root: ParentNode = document): HTMLElement | undefined {
-    const firstPanel = findPanelRootElements(root)[0];
-    if (firstPanel) {
-      const ancestor = this.findScrollableAncestor(firstPanel);
-      if (ancestor) {
-        return ancestor;
-      }
+    const panels = findPanelRootElements(root);
+    const firstPanel = panels[0];
+    if (!firstPanel) {
+      return undefined;
     }
 
-    return Array.from(root.querySelectorAll<HTMLElement>('*'))
-      .filter(isScrollable)
-      .sort((left, right) => right.scrollHeight - right.clientHeight - (left.scrollHeight - left.clientHeight))[0];
+    // Only consider ancestors of the dashboard panels. A global scrollbar scan
+    // can pick the navigation sidebar or the export dialog instead.
+    let layoutContainer: HTMLElement | undefined;
+    let ancestor = firstPanel.parentElement;
+    while (ancestor) {
+      if (panels.every((panel) => ancestor!.contains(panel))) {
+        if (isScrollable(ancestor)) {
+          return ancestor;
+        }
+        if (!layoutContainer && hasScrollLayout(ancestor)) {
+          layoutContainer = ancestor;
+        }
+      }
+      ancestor = ancestor.parentElement;
+    }
+
+    const ownerDocument = firstPanel.ownerDocument;
+    const documentScroller = (ownerDocument.scrollingElement ?? ownerDocument.documentElement) as HTMLElement;
+    // Page scrolling need not have overflow:auto. Prefer it when it overflows;
+    // otherwise a non-overflowing dashboard is still a valid one-pass capture.
+    if (documentScroller.scrollHeight > documentScroller.clientHeight) {
+      return documentScroller;
+    }
+    return layoutContainer ?? documentScroller;
   }
 
   getPanelGridPosition(element: HTMLElement, scrollContainer?: HTMLElement): GridPosition {

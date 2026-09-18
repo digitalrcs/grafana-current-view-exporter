@@ -2,7 +2,7 @@
 
 ## Grafana
 
-- Declared range: `>=12.4.0 <14.0.0`
+- Declared range: `>=12.4.0`
 - Grafana 13 scenes: prefers the panel screenshot service
 - Grafana 12.4 and unsupported panels: isolated `html-to-image` fallback
 

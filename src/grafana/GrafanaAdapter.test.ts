@@ -9,6 +9,80 @@ function setRect(element: HTMLElement, rect: Partial<DOMRect>): void {
 describe('GrafanaAdapter', () => {
   afterEach(() => {
     document.body.replaceChildren();
+    jest.restoreAllMocks();
+  });
+
+  function makeViewport(overflowY: string, scrollHeight: number, clientHeight: number): HTMLElement {
+    const viewport = document.createElement('main');
+    viewport.style.overflowY = overflowY;
+    Object.defineProperties(viewport, {
+      scrollHeight: { value: scrollHeight },
+      clientHeight: { value: clientHeight },
+    });
+    document.body.append(viewport);
+    return viewport;
+  }
+
+  function addPanel(parent: HTMLElement, id: string): HTMLElement {
+    const panel = document.createElement('section');
+    panel.dataset.vizPanelId = id;
+    parent.append(panel);
+    return panel;
+  }
+
+  test('captures a dashboard that fits its viewport even when the sidebar overflows', () => {
+    makeViewport('auto', 2000, 500);
+    const dashboard = makeViewport('auto', 600, 600);
+    addPanel(dashboard, '1');
+    addPanel(dashboard, '2');
+    expect(new GrafanaAdapter().findDashboardScrollContainer()).toBe(dashboard);
+  });
+
+  test('finds an overflowing dashboard ancestor outside a non-overflowing layout wrapper', () => {
+    const dashboard = makeViewport('auto', 2000, 600);
+    const wrapper = document.createElement('div');
+    wrapper.style.overflowY = 'auto';
+    dashboard.append(wrapper);
+    addPanel(wrapper, '1');
+    expect(new GrafanaAdapter().findDashboardScrollContainer()).toBe(dashboard);
+  });
+
+  test('ignores scrolling regions that do not contain every dashboard panel', () => {
+    const dashboard = makeViewport('auto', 3000, 600);
+    const nested = makeViewport('auto', 1000, 200);
+    dashboard.append(nested);
+    addPanel(nested, '1');
+    addPanel(dashboard, '2');
+    expect(new GrafanaAdapter().findDashboardScrollContainer()).toBe(dashboard);
+  });
+
+  test('falls back to the document for a layout without a CSS scrolling ancestor', () => {
+    makeViewport('auto', 2000, 500);
+    addPanel(document.body, '1');
+    expect(new GrafanaAdapter().findDashboardScrollContainer()).toBe(
+      document.scrollingElement ?? document.documentElement
+    );
+  });
+
+  test('does not treat an unrelated scrollbar as a dashboard when no panels exist', () => {
+    makeViewport('auto', 2000, 500);
+    expect(new GrafanaAdapter().findDashboardScrollContainer()).toBeUndefined();
+  });
+
+  test('counts document scrolling only once in panel coordinates', () => {
+    const scroller = document.documentElement;
+    Object.defineProperty(document, 'scrollingElement', { configurable: true, get: () => scroller });
+    jest.replaceProperty(window, 'scrollY', 400);
+    jest.spyOn(scroller, 'getBoundingClientRect').mockReturnValue({ top: -400 } as DOMRect);
+    const panel = addPanel(document.body, '1');
+    setRect(panel, { top: 100, left: 20, width: 800, height: 300 });
+    expect(new GrafanaAdapter().getPanelGridPosition(panel, scroller)).toEqual({
+      x: 20,
+      y: 500,
+      width: 800,
+      height: 300,
+    });
+    Reflect.deleteProperty(document, 'scrollingElement');
   });
 
   test('orders materialized panels by visual position instead of DOM order', () => {

@@ -26,14 +26,14 @@ Submit through the Grafana Cloud organization administrator interface:
 
 The [official submission guide](https://grafana.com/developers/plugin-tools/publish-a-plugin/publish-a-plugin) describes the automated validation and manual code/test review.
 
-## Submission fields for v1.2.0
+## Submission fields for v1.2.1
 
 - **Plugin ID:** `digitalrcs-currentviewexporter-app`
 - **OS & Architecture:** Single (frontend-only; no binaries)
-- **Release:** `https://github.com/digitalrcs/grafana-current-view-exporter/releases/tag/v1.2.0`
-- **Plugin ZIP:** `https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.0/digitalrcs-currentviewexporter-app-1.2.0.zip`
-- **SHA1 file:** `https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.0/digitalrcs-currentviewexporter-app-1.2.0.zip.sha1`
-- **Source code:** `https://github.com/digitalrcs/grafana-current-view-exporter/tree/v1.2.0`
+- **Release:** `https://github.com/digitalrcs/grafana-current-view-exporter/releases/tag/v1.2.1`
+- **Plugin ZIP:** `https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.1/digitalrcs-currentviewexporter-app-1.2.1.zip`
+- **SHA1 file:** `https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.1/digitalrcs-currentviewexporter-app-1.2.1.zip.sha1`
+- **Source code:** `https://github.com/digitalrcs/grafana-current-view-exporter/tree/v1.2.1`
 - **License:** Apache-2.0
 - **Provisioning provided:** Yes
 - **Signature request:** Community
@@ -45,14 +45,21 @@ The [official submission guide](https://grafana.com/developers/plugin-tools/publ
 
 ## Validator command
 
+### Review fixes in v1.2.1
+
+- The Grafana dependency is now `>=12.4.0`, with no upper bound.
+- Dashboard capture accepts a viewport with no vertical overflow. The adapter selects an ancestor of the dashboard panels, not an unrelated sidebar or dialog scrollbar, and supports document scrolling.
+- The app page uses Grafana's supplied title once, followed by three-step instructions and two bundled screenshots.
+- To reproduce the capture regression test, open the reviewer dashboard at a 1440 × 1600 viewport so all four panels fit, then select **Capture dashboard**. Expect four captured panels, zero failures, and a nonempty PNG. Repeat at a shorter viewport to exercise progressive scrolling and scroll restoration.
+
 Run the official validator against the immutable tagged source and release asset:
 
 ```bash
 docker run --pull=always --rm \
   -e GITHUB_TOKEN \
   grafana/plugin-validator-cli \
-  -sourceCodeUri https://github.com/digitalrcs/grafana-current-view-exporter/tree/v1.2.0 \
-  https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.0/digitalrcs-currentviewexporter-app-1.2.0.zip
+  -sourceCodeUri https://github.com/digitalrcs/grafana-current-view-exporter/tree/v1.2.1 \
+  https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.1/digitalrcs-currentviewexporter-app-1.2.1.zip
 ```
 
 Set `GITHUB_TOKEN` in the shell without printing it so the provenance analyzer can query GitHub attestations.

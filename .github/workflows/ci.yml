@@ -197,7 +197,20 @@ jobs:
 
       - name: Run Playwright tests
         id: run-tests
-        run: npm run e2e
+        env:
+          EXPORTER_QA_DIR: ${{ runner.temp }}/exporter-qa
+        run: |
+          mkdir -p "$EXPORTER_QA_DIR"
+          npm run e2e
+
+      - name: Upload screenshot evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: screenshots-${{ matrix.GRAFANA_IMAGE.name }}-${{ matrix.GRAFANA_IMAGE.VERSION }}
+          path: ${{ runner.temp }}/exporter-qa
+          if-no-files-found: ignore
+          retention-days: 7
 
       - name: Docker logs
         if: ${{ always() && steps.run-tests.outcome == 'failure' }}

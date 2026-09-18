@@ -2,7 +2,7 @@
 
 ## Target and extension surface
 
-The compatibility target is Grafana 12.4 through 13.x. Grafana's public UI-extension reference exposes the dashboard panel menu but not a dashboard-toolbar action, so the initial entry point is an `AppPlugin.addLink()` registration at `PluginExtensionPoints.DashboardPanelMenu`. Its click handler uses the extension helper's supported `openModal()` facility.
+The minimum supported Grafana version is 12.4, with no upper bound. Grafana's public UI-extension reference exposes the dashboard panel menu but not a dashboard-toolbar action, so the initial entry point is an `AppPlugin.addLink()` registration at `PluginExtensionPoints.DashboardPanelMenu`. Its click handler uses the extension helper's supported `openModal()` facility.
 
 The manifest sets `preload: true` because app plugins otherwise initialize only after a user first opens the app page; a dashboard-level extension must register when Grafana loads.
 

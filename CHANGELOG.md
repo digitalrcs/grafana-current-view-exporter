@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.1 - 2026-09-18
+
+- Declare an open-ended Grafana minimum version (`>=12.4.0`) for catalog compliance.
+- Fix dashboard capture when all panels fit on screen and no ancestor currently overflows.
+- Select the dashboard's own scroll viewport instead of unrelated sidebar or dialog scrollbars, and correct document-scroll coordinates.
+- Replace the duplicate app-page heading with three-step instructions, bundled screenshots, and capture behavior guidance.
+- Add regression tests for non-scrolling dashboards, unrelated scrollbars, and responsive app instructions.
+
 ## 1.2.0 - 2026-08-13
 
 - Replace the verbose export dialog with compact Help, Cancel, Capture current panel, and Capture dashboard controls.

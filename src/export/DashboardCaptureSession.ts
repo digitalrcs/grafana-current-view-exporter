@@ -68,7 +68,7 @@ export class DashboardCaptureSession {
     throwIfAborted(signal);
     const scrollContainer = this.adapter.findDashboardScrollContainer();
     if (!scrollContainer) {
-      throw new Error('The dashboard scroll container could not be identified.');
+      throw new Error('No rendered dashboard panels were found. Open a dashboard and wait for its panels to load.');
     }
 
     const originalScrollTop = scrollContainer.scrollTop;
