@@ -16,6 +16,8 @@ Captures only the selected, currently materialized panel and prepares a PNG down
 
 Progressively visits the dashboard from top to bottom, captures each materialized panel once, composes a layout-preserving PNG, and restores the original scroll position.
 
+Dashboards that fit on screen are captured in a single pass. Version 1.2.1 fixes the scroll-container error for these dashboards. The app page includes a quick-start guide and example screenshots.
+
 The result reports discovered, captured, and failed panels. One panel failure does not terminate the remaining capture.
 
 ## Large dashboards

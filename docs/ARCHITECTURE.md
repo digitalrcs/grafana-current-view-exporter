@@ -27,7 +27,7 @@ For Phase 9 PDF composition, the planned library is `pdf-lib`: it operates entir
 
 The complete runtime layout is not available through the panel-menu context. Dashboard capture therefore identifies the closest scrollable dashboard body, saves its position, and visits it from top to bottom with overlapping viewport steps. At each step it discovers newly materialized roots, captures them once by stable scene path/ID, and restores the original position in `finally`.
 
-Panel coordinates are measured relative to the scroll container's content space, not `window.scrollY`. That keeps placement stable as the dashboard moves. Version-specific selectors and scroll-container detection remain isolated in `GrafanaAdapter`.
+Panel coordinates are measured relative to the dashboard viewport's content space. For document scrolling, the adapter uses document coordinates and counts the window offset only once. A dashboard that fits its viewport is a valid single-pass capture. Scroll discovery is limited to ancestors containing the dashboard panels, so unrelated sidebar or dialog scrollbars are not selected. Version-specific selectors and scroll-container detection remain isolated in `GrafanaAdapter`.
 
 ## Readiness and stability
 

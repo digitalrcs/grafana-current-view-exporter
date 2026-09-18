@@ -34,9 +34,13 @@ Run:
 npm run e2e -- tests/capture-no-requery.spec.ts
 ```
 
-The first E2E test begins observing `/api/ds/query` requests only after the selected panel has completed its normal query, then requires current-panel capture to produce zero additional datasource-query requests.
+The current-panel E2E test begins observing `/api/ds/query` requests only after the selected panel has completed its normal query, then requires capture to produce zero additional datasource-query requests.
 
-The second test verifies progressive whole-dashboard capture, original-scroll restoration, and a nonempty PNG download. It does not claim zero requests during lazy materialization because Grafana may legitimately perform an initial query when a panel first becomes visible.
+The non-scrolling dashboard test uses a 1440 × 1600 viewport, checks that all four panels fit without an overflowing ancestor, and requires four successful captures with zero additional datasource-query requests. This covers the v1.2.0 scroll-container failure reported during catalog review.
+
+The progressive-capture test verifies whole-dashboard capture, original-scroll restoration, and a nonempty PNG download. It does not claim zero requests during lazy materialization because Grafana may legitimately perform an initial query when a panel first becomes visible.
+
+The app-guide tests check instructions, screenshot loading, and horizontal overflow at desktop and mobile widths. CI retains screenshots for visual review.
 
 ## Privacy and network behavior
 
