@@ -26,7 +26,7 @@ Progressive scrolling may cause Grafana's normal first query for a lazy panel th
 
 ## Compatibility and limitations
 
-- Grafana `>=12.4.0 <14.0.0`
+- Grafana `>=12.4.0`
 - PNG is implemented; JPEG and PDF are planned.
 - WebGL capture depends on Grafana's screenshot service or a panel-provided override.
 - Auto-refresh is not paused; avoid a scheduled refresh when strict snapshot consistency is required.

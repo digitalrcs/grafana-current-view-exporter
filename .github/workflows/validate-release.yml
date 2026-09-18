@@ -1,0 +1,46 @@
+name: Validate published release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Published release tag (for example v1.2.1)
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  attestations: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Validate public archive, checksum, source, and provenance
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ inputs.tag || github.event.release.tag_name }}
+        run: |
+          if [[ ! "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Expected a stable vMAJOR.MINOR.PATCH release tag"
+            exit 1
+          fi
+          version="${RELEASE_TAG#v}"
+          repo="https://github.com/${GITHUB_REPOSITORY}"
+          archive="${repo}/releases/download/${RELEASE_TAG}/digitalrcs-currentviewexporter-app-${version}.zip"
+          docker run --pull=always --rm -e GITHUB_TOKEN grafana/plugin-validator-cli \
+            -checksum "${archive}.sha1" \
+            -sourceCodeUri "${repo}/tree/${RELEASE_TAG}" \
+            "$archive" 2>&1 | tee validator.log
+      - name: Save validator output
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: grafana-validator-output
+          path: validator.log
+          if-no-files-found: warn
+          retention-days: 30

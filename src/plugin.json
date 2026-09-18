@@ -42,7 +42,7 @@
     {
       "type": "page",
       "name": "Current View Exporter",
-      "path": "/a/%PLUGIN_ID%/",
+      "path": "/a/%PLUGIN_ID%",
       "addToNav": true,
       "defaultNav": true
     }
@@ -57,7 +57,7 @@
     ]
   },
   "dependencies": {
-    "grafanaDependency": ">=12.4.0 <14.0.0",
+    "grafanaDependency": ">=12.4.0",
     "plugins": []
   }
 }

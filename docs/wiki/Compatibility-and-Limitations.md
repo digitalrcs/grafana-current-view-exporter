@@ -2,7 +2,7 @@
 
 ## Grafana
 
-- Declared range: `>=12.4.0 <14.0.0`
+- Declared range: `>=12.4.0`
 - Grafana 13 scenes: prefers the panel screenshot service
 - Grafana 12.4 and unsupported panels: isolated `html-to-image` fallback
 
@@ -10,6 +10,7 @@
 
 - Current-panel PNG
 - Dashboard PNG
+- Single-pass capture for dashboards that fit on screen (fixed in v1.2.1)
 - Progressive scrolling
 - Layout-preserving bounded composition
 - Cancellation and scroll restoration

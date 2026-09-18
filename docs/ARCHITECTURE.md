@@ -2,7 +2,7 @@
 
 ## Target and extension surface
 
-The compatibility target is Grafana 12.4 through 13.x. Grafana's public UI-extension reference exposes the dashboard panel menu but not a dashboard-toolbar action, so the initial entry point is an `AppPlugin.addLink()` registration at `PluginExtensionPoints.DashboardPanelMenu`. Its click handler uses the extension helper's supported `openModal()` facility.
+The minimum supported Grafana version is 12.4, with no upper bound. Grafana's public UI-extension reference exposes the dashboard panel menu but not a dashboard-toolbar action, so the initial entry point is an `AppPlugin.addLink()` registration at `PluginExtensionPoints.DashboardPanelMenu`. Its click handler uses the extension helper's supported `openModal()` facility.
 
 The manifest sets `preload: true` because app plugins otherwise initialize only after a user first opens the app page; a dashboard-level extension must register when Grafana loads.
 
@@ -27,7 +27,7 @@ For Phase 9 PDF composition, the planned library is `pdf-lib`: it operates entir
 
 The complete runtime layout is not available through the panel-menu context. Dashboard capture therefore identifies the closest scrollable dashboard body, saves its position, and visits it from top to bottom with overlapping viewport steps. At each step it discovers newly materialized roots, captures them once by stable scene path/ID, and restores the original position in `finally`.
 
-Panel coordinates are measured relative to the scroll container's content space, not `window.scrollY`. That keeps placement stable as the dashboard moves. Version-specific selectors and scroll-container detection remain isolated in `GrafanaAdapter`.
+Panel coordinates are measured relative to the dashboard viewport's content space. For document scrolling, the adapter uses document coordinates and counts the window offset only once. A dashboard that fits its viewport is a valid single-pass capture. Scroll discovery is limited to ancestors containing the dashboard panels, so unrelated sidebar or dialog scrollbars are not selected. Version-specific selectors and scroll-container detection remain isolated in `GrafanaAdapter`.
 
 ## Readiness and stability
 

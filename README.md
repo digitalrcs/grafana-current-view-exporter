@@ -37,7 +37,7 @@ Whole-dashboard capture can scroll a lazy panel into view. Grafana may then perf
 
 ## Compatibility
 
-- Grafana `>=12.4.0 <14.0.0`
+- Grafana `>=12.4.0`
 - Node.js 22+ for development
 - Modern browsers supported by Grafana; current E2E coverage uses Chromium
 - Grafana 13 scenes dashboards prefer `getPanelScreenshotService()`

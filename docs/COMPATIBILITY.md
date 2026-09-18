@@ -2,9 +2,9 @@
 
 ## Declared range
 
-`digitalrcs-currentviewexporter-app` declares Grafana `>=12.4.0 <14.0.0`.
+`digitalrcs-currentviewexporter-app` declares Grafana `>=12.4.0`.
 
-The upper bound is intentional: dashboard DOM structure and the Grafana 13 screenshot service are version-sensitive integration surfaces. Grafana 14 should be tested before widening the range.
+The minimum is open-ended as required by Grafana plugin policy. Dashboard DOM structure and the optional screenshot service remain version-sensitive, so CI checks supported releases and nightly; installability is not a guarantee that every future layout has been tested.
 
 ## Capture paths
 
