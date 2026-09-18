@@ -20,6 +20,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Validate public archive, checksum, source, and provenance
+        shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE_TAG: ${{ inputs.tag || github.event.release.tag_name }}

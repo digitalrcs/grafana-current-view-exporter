@@ -60,6 +60,7 @@ To run the same check locally:
 docker run --pull=always --rm \
   -e GITHUB_TOKEN \
   grafana/plugin-validator-cli \
+  -checksum https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.1/digitalrcs-currentviewexporter-app-1.2.1.zip.sha1 \
   -sourceCodeUri https://github.com/digitalrcs/grafana-current-view-exporter/tree/v1.2.1 \
   https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.1/digitalrcs-currentviewexporter-app-1.2.1.zip
 ```
