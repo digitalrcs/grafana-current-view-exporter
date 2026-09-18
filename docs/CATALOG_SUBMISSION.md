@@ -56,10 +56,14 @@ The **Validate published release** workflow runs the authenticated official vali
 
 To run the same check locally:
 
+The checked-in `validator-frontend.yaml` skips only `go-sec`: validator v0.49.4 reports an empty Go scan as an error for this frontend-only app. The workflow first rejects any Go source/module files or backend metadata. Dependency, JavaScript, antivirus, metadata, checksum, and provenance analyzers remain enabled. Remove this exception if a Go backend is introduced. Validator output is also checked for explicit errors, because some versions return exit status zero despite reporting errors.
+
 ```bash
 docker run --pull=always --rm \
   -e GITHUB_TOKEN \
+  -v "$PWD/validator-frontend.yaml:/validator-frontend.yaml:ro" \
   grafana/plugin-validator-cli \
+  -config /validator-frontend.yaml \
   -checksum https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.2/digitalrcs-currentviewexporter-app-1.2.2.zip.sha1 \
   -sourceCodeUri https://github.com/digitalrcs/grafana-current-view-exporter/tree/v1.2.2 \
   https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.2/digitalrcs-currentviewexporter-app-1.2.2.zip
