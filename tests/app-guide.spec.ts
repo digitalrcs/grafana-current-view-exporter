@@ -12,6 +12,7 @@ for (const viewport of [
     await gotoAppPage({ pluginId: 'digitalrcs-currentviewexporter-app' });
     await expect(page).toHaveURL(/\/a\/digitalrcs-currentviewexporter-app\/?/);
     await expect(page).toHaveTitle(/Grafana Current View Exporter/);
+    await expect(page.getByRole('heading', { name: 'Grafana Current View Exporter', exact: true })).toHaveCount(1);
     const guide = page.getByTestId('exporter-guide');
     await expect(guide.getByRole('heading', { name: 'Export a dashboard in three steps' })).toBeVisible();
     await expect(guide.getByRole('heading', { name: 'Grafana Current View Exporter' })).toHaveCount(0);
@@ -31,5 +32,11 @@ for (const viewport of [
         fullPage: true,
       });
     }
+    // Grafana must resolve the same navigation heading with or without a trailing slash.
+    await gotoAppPage({ pluginId: 'digitalrcs-currentviewexporter-app', path: '/' });
+    await expect(page).toHaveTitle(/Grafana Current View Exporter/);
+    await expect(page.getByRole('heading', { name: 'Grafana Current View Exporter', exact: true })).toHaveCount(1);
+    await expect(guide).toBeVisible();
+    expect(errors).toEqual([]);
   });
 }

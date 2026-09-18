@@ -6,6 +6,7 @@
 - Fix dashboard capture when all panels fit on screen and no ancestor currently overflows.
 - Select the dashboard's own scroll viewport instead of unrelated sidebar or dialog scrollbars, and correct document-scroll coordinates.
 - Replace the duplicate app-page heading with three-step instructions, bundled screenshots, and capture behavior guidance.
+- Resolve the correct app-page title both with and without a trailing slash in its URL.
 - Add regression tests for non-scrolling dashboards, unrelated scrollbars, and responsive app instructions.
 
 ## 1.2.0 - 2026-08-13
