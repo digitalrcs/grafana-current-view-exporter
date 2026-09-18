@@ -43,16 +43,18 @@ The [official submission guide](https://grafana.com/developers/plugin-tools/publ
 
 > This is a frontend-only Grafana App Plugin with no external service or credentials. Clone the tagged public source, run `npm ci`, `npm run build`, and `docker compose up --build -d`. Open http://localhost:3005 and sign in with admin/admin. Open Dashboards > Current View Exporter Review. From the Current View Exporter - Time series panel menu, select Extensions > Export current dashboard. Test Capture current panel, then Capture dashboard. The latter should report four captured panels, restore the original dashboard scroll position, and download a nonempty PNG. Run `npm run e2e -- tests/capture-no-requery.spec.ts` to verify that capturing an already-rendered panel causes zero additional `/api/ds/query` requests at the capture-button boundary. No dashboard data or image is transmitted outside the browser.
 
-## Validator command
-
-### Review fixes in v1.2.1
+## Review fixes in v1.2.1
 
 - The Grafana dependency is now `>=12.4.0`, with no upper bound.
 - Dashboard capture accepts a viewport with no vertical overflow. The adapter selects an ancestor of the dashboard panels, not an unrelated sidebar or dialog scrollbar, and supports document scrolling.
 - The app page uses Grafana's supplied title once, followed by three-step instructions and two bundled screenshots.
 - To reproduce the capture regression test, open the reviewer dashboard at a 1440 × 1600 viewport so all four panels fit, then select **Capture dashboard**. Expect four captured panels, zero failures, and a nonempty PNG. Repeat at a shorter viewport to exercise progressive scrolling and scroll restoration.
 
-Run the official validator against the immutable tagged source and release asset:
+## Validator command
+
+The **Validate published release** workflow runs the authenticated official validator against the public ZIP, SHA1 file, and tagged source when a release is published. Its log is retained as a workflow artifact. It can also be rerun manually with a version tag.
+
+To run the same check locally:
 
 ```bash
 docker run --pull=always --rm \
