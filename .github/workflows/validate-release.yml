@@ -19,6 +19,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.tag || github.event.release.tag_name }}
+          persist-credentials: false
       - name: Validate public archive, checksum, source, and provenance
         shell: bash
         env:
@@ -30,12 +34,24 @@ jobs:
             exit 1
           fi
           version="${RELEASE_TAG#v}"
+          if [[ -n "$(git ls-files '*.go' go.mod '**/go.mod')" ]]; then
+            echo "Go sources detected: remove the frontend-only gosec exception before validating."
+            exit 1
+          fi
+          node -e 'if (require("./src/plugin.json").backend) { throw new Error("Backend plugin cannot use frontend-only validator config"); }'
           repo="https://github.com/${GITHUB_REPOSITORY}"
           archive="${repo}/releases/download/${RELEASE_TAG}/digitalrcs-currentviewexporter-app-${version}.zip"
-          docker run --pull=always --rm -e GITHUB_TOKEN grafana/plugin-validator-cli \
+          docker run --pull=always --rm -e GITHUB_TOKEN \
+            -v "$PWD/validator-frontend.yaml:/validator-frontend.yaml:ro" grafana/plugin-validator-cli \
+            -config /validator-frontend.yaml \
             -checksum "${archive}.sha1" \
             -sourceCodeUri "${repo}/tree/${RELEASE_TAG}" \
             "$archive" 2>&1 | tee validator.log
+          # Some validator versions print errors while returning exit status 0.
+          if grep -Eq '^error:|^fatal:' validator.log; then
+            echo "Validator reported errors; see validator.log."
+            exit 1
+          fi
       - name: Save validator output
         if: always()
         uses: actions/upload-artifact@v7

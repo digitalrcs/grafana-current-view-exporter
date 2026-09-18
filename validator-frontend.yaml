@@ -1,0 +1,9 @@
+# This app has no Go sources or backend. Validator v0.49.4 runs gosec anyway
+# and reports "gosec returned an empty report" for an empty Go source tree.
+# The release-validation workflow rejects Go files/backend metadata before
+# using this config. All other analyzers remain enabled.
+global:
+  enabled: true
+analyzers:
+  go-sec:
+    enabled: false
