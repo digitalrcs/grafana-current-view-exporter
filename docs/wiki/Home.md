@@ -4,7 +4,9 @@ Grafana Current View Exporter creates a PNG from the dashboard visual state alre
 
 It is designed for dashboards whose datasource queries are expensive or slow. Capturing an already-rendered panel does not call Grafana render endpoints, reload the dashboard, refresh it, or invoke datasource APIs directly.
 
-![Compact dashboard export controls](https://raw.githubusercontent.com/digitalrcs/grafana-current-view-exporter/main/src/img/export-dialog-compact.png)
+![Actual four-panel dashboard PNG exported from the bundled Grafana TestData example](https://raw.githubusercontent.com/digitalrcs/grafana-current-view-exporter/main/src/img/export-dashboard-example.png)
+
+Use a single-panel image for a focused finding or a dashboard image for a handover, ticket, or presentation. The image contains the captured panel areas, not Grafana's surrounding navigation or time picker. Expand desired sections, wait for panels to finish rendering, and inspect the downloaded PNG before sharing it.
 
 ## Start here
 
@@ -19,7 +21,7 @@ It is designed for dashboards whose datasource queries are expensive or slow. Ca
 
 ## Privacy
 
-All dashboard capture and image composition occurs locally in the browser. The plugin has no backend, telemetry, cloud upload, CDN, or external rendering service.
+Dashboard capture and image composition run in the browser. The plugin has no backend or telemetry and does not upload captured images to an external rendering service. Normal Grafana, datasource, and panel-asset requests can still occur; browser-local capture is not a guarantee of an offline dashboard.
 
 Plugin ID: `digitalrcs-currentviewexporter-app`  
 License: Apache-2.0  

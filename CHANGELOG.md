@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.3 - 2026-09-27
+
+- Expand the packaged catalog README with illustrated examples, installation and usage instructions, capture scope, privacy boundaries, and practical limitations.
+- Align the repository README with the catalog guide and distinguish the shared demo from the standalone reviewer environment.
+- Refresh the catalog gallery with an actual exported dashboard PNG and current capture controls, using only the bundled Grafana TestData example.
+- Document Update submission for the existing Grafana review instead of creating a duplicate submission.
+- Refresh qs to 6.16.0 and react-router-dom to 6.30.6 within existing dependency ranges to address release-preflight security findings.
+
 ## 1.2.2 - 2026-09-18
 
 - Include all catalog-review fixes from the v1.2.1 source tag, whose release was blocked by dependency validation.

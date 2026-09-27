@@ -1,38 +1,97 @@
 # Grafana Current View Exporter
 
-Export the dashboard currently shown in your Grafana browser session as a PNG without calling Grafana render endpoints, reloading the dashboard, or deliberately refreshing datasource queries.
+Turn the dashboard you are viewing into a shareable PNG, directly from your Grafana browser session. Export one panel or combine the dashboard's panels into a single image without setting up a separate rendering service.
 
-![Compact dashboard export controls](https://raw.githubusercontent.com/digitalrcs/grafana-current-view-exporter/main/src/img/export-dialog-compact.png)
+Use it to capture an investigation, attach visual evidence to a support ticket, prepare a presentation, or share a dashboard view during a handover. The result is an image of the rendered panels, not a data export or an interactive dashboard.
 
-![Completed four-panel dashboard PNG capture](https://raw.githubusercontent.com/digitalrcs/grafana-current-view-exporter/main/src/img/export-dashboard-ready.png)
+## See the result
 
-## What it does
+![PNG exported from a four-panel Grafana dashboard, showing a time series, stat, bar gauge, and explanatory text](https://raw.githubusercontent.com/digitalrcs/grafana-current-view-exporter/main/src/img/export-dashboard-example.png)
 
-- Captures the current rendered panel or progressively captures the entire visible dashboard.
-- Preserves measured panel layout and restores the original dashboard scroll position.
-- Uses compressed browser-local PNG snapshots and bounded final-image composition.
-- Reports panel failures without terminating the remaining export.
-- Has no backend, telemetry, cloud upload, CDN, or external rendering service.
+An actual PNG downloaded with **Capture dashboard**, using the included reviewer dashboard and Grafana's built-in TestData source. The example data is illustrative. No additional DigitalRCS panels, AI provider, or external data service is required.
 
-## Use
+## Key capabilities
 
-1. Wait for the dashboard panels to finish rendering.
-2. Open any panel menu.
-3. Select **Extensions > Export current dashboard**.
-4. Choose **Capture current panel** or **Capture dashboard**. Use the help icon for capture behavior and status details.
-5. Download the PNG.
+- **Capture one panel or the dashboard:** choose the scope from the same compact dialog.
+- **Use your current browser session:** capture panels after selecting the time range, variables, and visible state you want to share.
+- **Include panels below the fold:** dashboard capture progressively scrolls to discover and capture more panels, then restores your original scroll position.
+- **Keep the panel arrangement:** combine captured panels into one PNG using their measured dashboard positions.
+- **Review the outcome:** see captured and failed panel counts, cancel an active capture, and check warnings before downloading.
+- **Export locally:** image capture and composition run in the browser, with no exporter backend or external rendering service.
 
-Progressive scrolling may cause Grafana's normal first query for a lazy panel that was never materialized in this browser session. The exporter never calls datasource APIs directly. Capture of an already-rendered panel is E2E-tested to cause zero `/api/ds/query` requests at the capture-button boundary.
+## Requirements and installation
+
+The plugin requires **Grafana 12.4 or later** and a browser supported by your Grafana version. Automated browser tests use Chromium.
+
+This is an **app plugin**, not a visualization or data source. After your Grafana administrator installs **Grafana Current View Exporter**, enable the app for the organization. You do not need to add a new panel, configure another data source, create an exporter account, or install an image-renderer service.
+
+Open a dashboard you already have permission to view. The exporter works with that browser session; it does not grant access to other dashboards or data.
+
+See the [installation guide](https://github.com/digitalrcs/grafana-current-view-exporter/blob/main/docs/INSTALLATION.md) for deployment details and the separate unsigned review/development setup.
+
+## Export a panel or dashboard
+
+1. Open your dashboard and choose the time range and variables.
+2. Expand the sections you want to include and wait for charts, tables, and other panel content to finish rendering.
+3. Open a panel's menu and select **Extensions → Export current dashboard**.
+4. Choose **Capture current panel** for that panel, or **Capture dashboard** for the dashboard's panels. Select **Help** for behavior and status details.
+5. When **PNG ready** appears, check any warnings and select **Download PNG**.
+
+![Compact export dialog with Help, Cancel, Capture current panel, and Capture dashboard controls](https://raw.githubusercontent.com/digitalrcs/grafana-current-view-exporter/main/src/img/export-dialog-compact.png)
+
+Choose the capture scope without leaving the dashboard. During capture, **Cancel capture** stops the operation; dashboard capture restores the original scroll position.
+
+### Check the result before sharing
+
+![Completed dashboard capture showing four captured panels, zero failures, and the Download PNG button](https://raw.githubusercontent.com/digitalrcs/grafana-current-view-exporter/main/src/img/export-dashboard-ready.png)
+
+The dashboard completion dialog reports the image dimensions, captured panel count, and any warnings. A failed panel does not stop the remaining panels from being captured, so a completed image can still be partial. Open the downloaded PNG and confirm that the panels and text you need are present.
+
+The filename is based on the selected panel or dashboard title. The screenshots above show the export controls and completion state; the first image on this page is the downloaded PNG itself.
+
+## How capture behaves
+
+**Current-panel capture** uses the selected panel's rendered content. **Dashboard capture** scrolls through the dashboard, captures panels as they become available, and combines their images into one PNG.
+
+The exporter does not call Grafana render endpoints, reload the dashboard, request a refresh, or invoke data source APIs directly. This avoids deliberately starting a separate dashboard-rendering session just to create an image.
+
+It is not a guarantee of zero network traffic or a single instant in time. Grafana can run a panel's normal initial query when scrolling brings a previously unloaded panel into view. Scheduled refreshes, live data, and third-party panel behavior can also change content during capture.
+
+For a more consistent image, let panels settle and manually turn off automatic refresh while exporting, if appropriate for your workflow. The exporter does not pause refresh for you.
+
+## What is included in the PNG?
+
+The dashboard image contains the **captured panel areas and their layout**. It does not add Grafana's navigation, dashboard heading, variable controls, or time picker around the panels.
+
+Capture reflects the content rendered inside each panel. It does not expand collapsed rows, visit other dashboard tabs, advance a table's pagination, or export underlying query rows. Before capturing, expand the desired sections and make important content visible. Enlarge panels when long text or internal scrollbars would otherwise hide part of the result.
 
 ## Compatibility and limitations
 
-- Grafana `>=12.4.0`
-- PNG is implemented; JPEG and PDF are planned.
-- WebGL capture depends on Grafana's screenshot service or a panel-provided override.
-- Auto-refresh is not paused; avoid a scheduled refresh when strict snapshot consistency is required.
+- **PNG output only.** There is no PDF, JPEG, scheduled report, or server-side export workflow.
+- **Panel rendering matters.** The plugin uses Grafana's panel screenshot service when available, with a DOM-based fallback. Some third-party panels, WebGL content, cross-origin images, or custom fonts may not capture as expected.
+- **Large dashboards may be reduced in size.** Final images are automatically downscaled when they exceed the composer's browser-canvas limits. A warning identifies that reduction; available browser memory still matters.
+- **Capture is progressive, not atomic.** Different panels can be captured at different moments. Inspect the result when working with rapidly changing data.
+- **A successful download is not a visual-quality guarantee.** Always inspect exported images before using them in a report.
 
-All capture and image generation occurs locally in the browser. No dashboard data is transmitted to an external rendering service.
+See [compatibility and limitations](https://github.com/digitalrcs/grafana-current-view-exporter/blob/main/docs/COMPATIBILITY.md) and [troubleshooting](https://github.com/digitalrcs/grafana-current-view-exporter/blob/main/docs/TROUBLESHOOTING.md) for more detail.
 
-Full documentation, installation instructions, architecture notes, and reviewer guidance are available in the [source repository](https://github.com/digitalrcs/grafana-current-view-exporter) and [wiki](https://github.com/digitalrcs/grafana-current-view-exporter/wiki).
+## Privacy
 
-Apache-2.0. Copyright 2026 DigitalRCS.
+Captured panel images are processed and composed in your browser. This plugin has no backend or telemetry and does not upload captured images to an external rendering service.
+
+Normal Grafana, data source, and panel-asset requests can still occur. Browser-local image generation does not make the dashboard offline. Downloaded PNGs may contain sensitive information; review them and follow your organization's sharing policy.
+
+## Documentation and support
+
+- [User guide](https://github.com/digitalrcs/grafana-current-view-exporter/wiki/Using-the-Exporter)
+- [Installation](https://github.com/digitalrcs/grafana-current-view-exporter/blob/main/docs/INSTALLATION.md)
+- [Query safety and lazy panels](https://github.com/digitalrcs/grafana-current-view-exporter/wiki/Query-Safety-and-Lazy-Panels)
+- [Troubleshooting](https://github.com/digitalrcs/grafana-current-view-exporter/blob/main/docs/TROUBLESHOOTING.md)
+- [Source code and releases](https://github.com/digitalrcs/grafana-current-view-exporter)
+- [Report an issue](https://github.com/digitalrcs/grafana-current-view-exporter/issues)
+
+When reporting a capture problem, include your Grafana version, plugin version, browser, panel type, and any capture warning. Remove credentials and sensitive dashboard content from reports and screenshots.
+
+## License
+
+Apache-2.0. Developed by [DigitalRCS](https://www.digitalrcs.com).
