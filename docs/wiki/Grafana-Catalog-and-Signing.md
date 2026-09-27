@@ -1,20 +1,28 @@
 # Grafana catalog and signing
 
-The project requests the free **Community** classification. It is Apache-2.0, public, open source, non-commercial, testable without external services, and contains no telemetry.
+The project requests the free **Community** classification. It is Apache-2.0, public, free and open source, testable without external services, and contains no telemetry.
 
-For a first public submission:
+## Update the existing submission
+
+Sign in to Grafana.com, open **My plugins**, select **Grafana Current View Exporter**, and use **Update submission** on [the existing review](https://grafana.com/orgs/digitalrcs/plugin-submissions/digitalrcs-currentviewexporter-app). Do not create a duplicate submission or rely on a discussion comment to change the reviewed archive.
+
+Provide a new release ZIP URL, the matching SHA1 hash value, and source code at that same release tag. The catalog README is bundled from `src/README.md`; changing the GitHub README alone does not update the submitted plugin. Publish a new archive containing the updated documentation and screenshots, then update the submission.
+
+## First public submission (reference)
+
+For a plugin that has no submission yet:
 
 1. Publish the unsigned, provenance-attested GitHub release archive.
 2. Sign in to Grafana Cloud as the `digitalrcs` organization administrator.
 3. Open **Org Settings > My Plugins > Submit New Plugin**.
 4. Submit the release ZIP URL, SHA1, tagged source URL, and reviewer guidance.
 
-For `v1.2.2`, use the immutable URLs and testing guidance in the repository's [catalog submission guide](https://github.com/digitalrcs/grafana-current-view-exporter/blob/main/docs/CATALOG_SUBMISSION.md).
+For `v1.2.3`, use the immutable URLs and testing guidance in the repository's [catalog submission guide](https://github.com/digitalrcs/grafana-current-view-exporter/blob/main/docs/CATALOG_SUBMISSION.md). This release includes the illustrated catalog README and refreshed screenshots, alongside the capture fixes from v1.2.2.
 
-- Release: <https://github.com/digitalrcs/grafana-current-view-exporter/releases/tag/v1.2.2>
-- Plugin ZIP: <https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.2/digitalrcs-currentviewexporter-app-1.2.2.zip>
-- SHA1 file: <https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.2/digitalrcs-currentviewexporter-app-1.2.2.zip.sha1>
-- Tagged source: <https://github.com/digitalrcs/grafana-current-view-exporter/tree/v1.2.2>
+- Release: <https://github.com/digitalrcs/grafana-current-view-exporter/releases/tag/v1.2.3>
+- Plugin ZIP: <https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.3/digitalrcs-currentviewexporter-app-1.2.3.zip>
+- SHA1 file: <https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.3/digitalrcs-currentviewexporter-app-1.2.3.zip.sha1>
+- Tagged source: <https://github.com/digitalrcs/grafana-current-view-exporter/tree/v1.2.3>
 
 Grafana reviews public plugins before granting a signature level. After Community approval, create a `plugins:write` access-policy token, save it only as the GitHub secret `GRAFANA_ACCESS_POLICY_TOKEN`, enable the repository variable `GRAFANA_PUBLIC_SIGNING_ENABLED`, and tag the next release.
 

@@ -23,12 +23,12 @@
     ],
     "screenshots": [
       {
-        "name": "Compact dashboard export controls",
-        "path": "img/export-dialog-compact.png"
+        "name": "Actual PNG exported from a four-panel Grafana dashboard",
+        "path": "img/export-dashboard-example.png"
       },
       {
-        "name": "Capture behavior and current dashboard details",
-        "path": "img/export-dialog-help.png"
+        "name": "Compact dashboard export controls",
+        "path": "img/export-dialog-compact.png"
       },
       {
         "name": "Completed four-panel dashboard PNG capture",
