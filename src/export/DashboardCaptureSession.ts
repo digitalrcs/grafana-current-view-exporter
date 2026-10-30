@@ -92,6 +92,7 @@ export class DashboardCaptureSession {
     try {
       let targetScrollTop = 0;
       let previousScrollTop = -1;
+      let reachedBottom = false;
       for (let step = 0; step < MAX_SCROLL_STEPS; step++) {
         throwIfAborted(signal);
         scrollContainer.scrollTo({ top: targetScrollTop, left: originalScrollLeft, behavior: 'auto' });
@@ -143,11 +144,14 @@ export class DashboardCaptureSession {
 
         const maxScrollTop = Math.max(0, scrollContainer.scrollHeight - scrollContainer.clientHeight);
         const currentScrollTop = scrollContainer.scrollTop;
-        if (step > 0 && currentScrollTop <= previousScrollTop + 1) {
+        if (currentScrollTop >= maxScrollTop - 1) {
+          reachedBottom = true;
           break;
         }
-        if (currentScrollTop >= maxScrollTop - 1) {
-          break;
+        if (step > 0 && currentScrollTop <= previousScrollTop + 1) {
+          throw new Error(
+            'Dashboard scrolling stopped before reaching the bottom. Capture is incomplete; no image was exported.'
+          );
         }
         const increment = Math.max(1, Math.floor(scrollContainer.clientHeight * (1 - SCROLL_OVERLAP)));
         const nextScrollTop = Math.min(maxScrollTop, currentScrollTop + increment);
@@ -156,6 +160,9 @@ export class DashboardCaptureSession {
         }
         previousScrollTop = currentScrollTop;
         targetScrollTop = nextScrollTop;
+      }
+      if (!reachedBottom) {
+        throw new Error('The entire dashboard could not be traversed. Capture is incomplete; no image was exported.');
       }
     } finally {
       scrollContainer.scrollTo({ top: originalScrollTop, left: originalScrollLeft, behavior: 'auto' });

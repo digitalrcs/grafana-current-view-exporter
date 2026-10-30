@@ -137,7 +137,7 @@ jobs:
     needs: build
     if: ${{ needs.build.outputs.has-e2e == 'true' }}
     outputs:
-      matrix: ${{ steps.resolve-versions.outputs.matrix }}
+      matrix: ${{ steps.regression-versions.outputs.matrix }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -147,6 +147,14 @@ jobs:
       - name: Resolve Grafana E2E versions
         id: resolve-versions
         uses: grafana/plugin-actions/e2e-version@e2e-version/v3.0.1
+
+      - name: Include exact minimum and reviewer regression versions
+        id: regression-versions
+        env:
+          RESOLVED_MATRIX: ${{ steps.resolve-versions.outputs.matrix }}
+        run: |
+          matrix=$(jq -c '. + [{"name":"grafana-enterprise","version":"12.4.0"},{"name":"grafana-enterprise","version":"13.3.0"}] | unique_by([.name, .version])' <<< "$RESOLVED_MATRIX")
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
 
   playwright-tests:
     needs: [resolve-versions, build]

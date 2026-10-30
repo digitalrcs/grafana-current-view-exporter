@@ -51,6 +51,17 @@ function normalizePanelId(rawId: string | undefined): string | undefined {
 }
 
 function hasScrollLayout(element: HTMLElement): boolean {
+  const ownerDocument = element.ownerDocument;
+  // With visible root overflow, the body's overflow is propagated to the
+  // viewport. Its scrollHeight can exceed clientHeight, but body.scrollTo is
+  // ineffective in standards mode (Grafana 12.4's page layout).
+  if (
+    element === ownerDocument.body &&
+    ownerDocument.scrollingElement !== element &&
+    window.getComputedStyle(ownerDocument.documentElement).overflowY === 'visible'
+  ) {
+    return false;
+  }
   const overflowY = window.getComputedStyle(element).overflowY;
   return overflowY === 'auto' || overflowY === 'scroll';
 }

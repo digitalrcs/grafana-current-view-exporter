@@ -1,0 +1,655 @@
+{
+  "uid": "current-view-exporter-tall",
+  "title": "Current View Exporter Tall Review",
+  "schemaVersion": 41,
+  "version": 1,
+  "editable": true,
+  "refresh": "",
+  "timezone": "utc",
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Tall dashboard panel 01",
+      "type": "timeseries",
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "exporter-testdata"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "scenarioId": "random_walk",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "exporter-testdata"
+          }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Tall dashboard panel 02",
+      "type": "timeseries",
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "exporter-testdata"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 12,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "scenarioId": "random_walk",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "exporter-testdata"
+          }
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Tall dashboard panel 03",
+      "type": "timeseries",
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "exporter-testdata"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 9,
+        "w": 12,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "scenarioId": "random_walk",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "exporter-testdata"
+          }
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Tall dashboard panel 04",
+      "type": "timeseries",
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "exporter-testdata"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 9,
+        "w": 12,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "scenarioId": "random_walk",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "exporter-testdata"
+          }
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Tall dashboard panel 05",
+      "type": "timeseries",
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "exporter-testdata"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 18,
+        "w": 12,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "scenarioId": "random_walk",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "exporter-testdata"
+          }
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Tall dashboard panel 06",
+      "type": "timeseries",
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "exporter-testdata"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 18,
+        "w": 12,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "scenarioId": "random_walk",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "exporter-testdata"
+          }
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Tall dashboard panel 07",
+      "type": "timeseries",
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "exporter-testdata"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 27,
+        "w": 12,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "scenarioId": "random_walk",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "exporter-testdata"
+          }
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Tall dashboard panel 08",
+      "type": "timeseries",
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "exporter-testdata"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 27,
+        "w": 12,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "scenarioId": "random_walk",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "exporter-testdata"
+          }
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Tall dashboard panel 09",
+      "type": "timeseries",
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "exporter-testdata"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 36,
+        "w": 12,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "scenarioId": "random_walk",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "exporter-testdata"
+          }
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Tall dashboard panel 10",
+      "type": "timeseries",
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "exporter-testdata"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 36,
+        "w": 12,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "scenarioId": "random_walk",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "exporter-testdata"
+          }
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "title": "Tall dashboard panel 11",
+      "type": "timeseries",
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "exporter-testdata"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 45,
+        "w": 12,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "scenarioId": "random_walk",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "exporter-testdata"
+          }
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "title": "Tall dashboard panel 12",
+      "type": "timeseries",
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "exporter-testdata"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 45,
+        "w": 12,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "scenarioId": "random_walk",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "exporter-testdata"
+          }
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "title": "Tall dashboard panel 13",
+      "type": "timeseries",
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "exporter-testdata"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 54,
+        "w": 12,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "scenarioId": "random_walk",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "exporter-testdata"
+          }
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "title": "Tall dashboard panel 14",
+      "type": "timeseries",
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "exporter-testdata"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 54,
+        "w": 12,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "scenarioId": "random_walk",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "exporter-testdata"
+          }
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "title": "Tall dashboard panel 15",
+      "type": "timeseries",
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "exporter-testdata"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 63,
+        "w": 12,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "scenarioId": "random_walk",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "exporter-testdata"
+          }
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "title": "Tall dashboard panel 16",
+      "type": "timeseries",
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "exporter-testdata"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 63,
+        "w": 12,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "scenarioId": "random_walk",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "exporter-testdata"
+          }
+        }
+      ]
+    }
+  ]
+}
