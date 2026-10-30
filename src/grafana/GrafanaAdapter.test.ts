@@ -9,7 +9,29 @@ function setRect(element: HTMLElement, rect: Partial<DOMRect>): void {
 describe('GrafanaAdapter', () => {
   afterEach(() => {
     document.body.replaceChildren();
+    document.body.removeAttribute('style');
+    document.documentElement.removeAttribute('style');
     jest.restoreAllMocks();
+  });
+
+  test('uses the document when body overflow is propagated to the viewport (Grafana 12.4)', () => {
+    document.body.style.overflowY = 'auto';
+    document.documentElement.style.overflowY = 'visible';
+    jest.spyOn(document.body, 'scrollHeight', 'get').mockReturnValue(2895);
+    jest.spyOn(document.body, 'clientHeight', 'get').mockReturnValue(900);
+    jest.spyOn(document.documentElement, 'scrollHeight', 'get').mockReturnValue(2895);
+    jest.spyOn(document.documentElement, 'clientHeight', 'get').mockReturnValue(900);
+    addPanel(document.body, '1');
+    expect(new GrafanaAdapter().findDashboardScrollContainer()).toBe(document.documentElement);
+  });
+
+  test('retains a genuine body scroll container when root overflow is constrained', () => {
+    document.body.style.overflowY = 'auto';
+    document.documentElement.style.overflowY = 'hidden';
+    jest.spyOn(document.body, 'scrollHeight', 'get').mockReturnValue(2895);
+    jest.spyOn(document.body, 'clientHeight', 'get').mockReturnValue(900);
+    addPanel(document.body, '1');
+    expect(new GrafanaAdapter().findDashboardScrollContainer()).toBe(document.body);
   });
 
   function makeViewport(overflowY: string, scrollHeight: number, clientHeight: number): HTMLElement {

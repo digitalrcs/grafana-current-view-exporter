@@ -51,6 +51,17 @@ function normalizePanelId(rawId: string | undefined): string | undefined {
 }
 
 function hasScrollLayout(element: HTMLElement): boolean {
+  const ownerDocument = element.ownerDocument;
+  // With visible root overflow, the body's overflow is propagated to the
+  // viewport. Its scrollHeight can exceed clientHeight, but body.scrollTo is
+  // ineffective in standards mode (Grafana 12.4's page layout).
+  if (
+    element === ownerDocument.body &&
+    ownerDocument.scrollingElement !== element &&
+    window.getComputedStyle(ownerDocument.documentElement).overflowY === 'visible'
+  ) {
+    return false;
+  }
   const overflowY = window.getComputedStyle(element).overflowY;
   return overflowY === 'auto' || overflowY === 'scroll';
 }
@@ -123,6 +134,15 @@ export class GrafanaAdapter {
 
   getPanelGridPosition(element: HTMLElement, scrollContainer?: HTMLElement): GridPosition {
     return rectToGridPosition(element, scrollContainer ?? this.findScrollableAncestor(element));
+  }
+
+  isPanelInViewport(element: HTMLElement, scrollContainer: HTMLElement): boolean {
+    const rect = element.getBoundingClientRect();
+    const containerRect = scrollContainer.getBoundingClientRect();
+    const isDocument = scrollContainer === element.ownerDocument.scrollingElement;
+    const top = isDocument ? 0 : Math.max(0, containerRect.top);
+    const bottom = isDocument ? window.innerHeight : Math.min(window.innerHeight, containerRect.bottom);
+    return rect.width > 0 && rect.height > 0 && rect.bottom > top && rect.top < bottom;
   }
 
   discoverDashboardPanels(context: PluginExtensionPanelContext): PanelDescriptor[] {

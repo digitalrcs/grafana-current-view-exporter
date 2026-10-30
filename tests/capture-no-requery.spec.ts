@@ -103,6 +103,9 @@ test('progressively captures the entire dashboard, restores scroll, and download
     while (element) {
       const overflowY = window.getComputedStyle(element).overflowY;
       if ((overflowY === 'auto' || overflowY === 'scroll') && element.scrollHeight > element.clientHeight) {
+        if (element === document.body && getComputedStyle(document.documentElement).overflowY === 'visible') {
+          element = (document.scrollingElement ?? document.documentElement) as HTMLElement;
+        }
         element.scrollTop = Math.min(150, element.scrollHeight - element.clientHeight);
         element.dataset.currentViewExporterTestScrollContainer = 'true';
         return element.scrollTop;
@@ -111,11 +114,13 @@ test('progressively captures the entire dashboard, restores scroll, and download
     }
     throw new Error('Dashboard scroll container not found from a materialized panel.');
   });
+  expect(originalScrollTop).toBeGreaterThan(0);
   const dashboardScrollContainer = page.locator('[data-current-view-exporter-test-scroll-container="true"]');
 
   await page.getByRole('button', { name: 'Capture dashboard' }).click();
   await expect(page.getByTestId('capture-state')).toHaveText('CAPTURED', { timeout: 60_000 });
   await expect(page.getByRole('status', { name: 'PNG ready' })).toContainText('panels');
+  await expect(page.getByTestId('dashboard-capture-progress')).toContainText('Discovered 4; captured 4; failed 0');
   await expect.poll(() => dashboardScrollContainer.evaluate((element) => element.scrollTop)).toBe(originalScrollTop);
 
   const downloadPromise = page.waitForEvent('download');

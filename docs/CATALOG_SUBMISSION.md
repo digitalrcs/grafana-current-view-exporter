@@ -2,14 +2,16 @@
 
 ## Requested classification
 
-Grafana's reviewer has approved the plugin for signing. The next submission is the **v1.2.4 Community-signed release**; catalog publication still requires updating the existing submission with the signed archive.
+Grafana's reviewer approved Community signing, then found incomplete tall-dashboard captures on Grafana 12.4.0 during final review of v1.2.4. The next submission is **v1.2.5**, which fixes that regression without raising the minimum version. Publish and verify the signed archive before updating the existing submission; catalog approval remains a separate Grafana review action.
 
-## Signed submission fields for v1.2.4
+## Signed submission fields for v1.2.5
 
-- **Release:** <https://github.com/digitalrcs/grafana-current-view-exporter/releases/tag/v1.2.4>
-- **Plugin ZIP:** <https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.4/digitalrcs-currentviewexporter-app-1.2.4.zip>
-- **SHA1 file:** <https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.4/digitalrcs-currentviewexporter-app-1.2.4.zip.sha1>
-- **Source code:** <https://github.com/digitalrcs/grafana-current-view-exporter/tree/v1.2.4>
+- **Release:** <https://github.com/digitalrcs/grafana-current-view-exporter/releases/tag/v1.2.5>
+- **Plugin ZIP:** <https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.5/digitalrcs-currentviewexporter-app-1.2.5.zip>
+- **SHA1 file:** <https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.5/digitalrcs-currentviewexporter-app-1.2.5.zip.sha1>
+- **Source code:** <https://github.com/digitalrcs/grafana-current-view-exporter/tree/v1.2.5>
+
+Regression fixture: `provisioning/dashboards/current-view-exporter-tall.json` contains 16 TestData random-walk panels, two per row, grid height 9. Open it without scrolling, then choose **Extensions > Export current dashboard > Capture dashboard**. Expected: **Discovered 16; captured 16; failed 0**, a full-height PNG including panels 15 and 16, and the original scroll position restored. The browser regression runs on exact Grafana 12.4.0 and 13.3.0.
 
 Use the hash value from the checksum file in the SHA1 form field. Before submitting, verify the published ZIP includes a `MANIFEST.txt` with `signatureType: community`, the correct plugin ID and version, matching file hashes, and a passing published-release validator run. Do not modify signed files. The v1.2.3 URLs below are retained as historical initial-review references.
 
