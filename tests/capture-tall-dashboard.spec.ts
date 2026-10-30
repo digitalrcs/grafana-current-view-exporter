@@ -5,6 +5,7 @@ import { join } from 'node:path';
 test('captures all 16 lazy panels from a fresh unscrolled dashboard', async ({
   gotoDashboardPage,
   readProvisionedDashboard,
+  grafanaVersion,
   page,
 }) => {
   test.setTimeout(120_000);
@@ -17,7 +18,10 @@ test('captures all 16 lazy panels from a fresh unscrolled dashboard', async ({
   await expect(page).toHaveTitle(/Current View Exporter Tall Review/);
   const roots = page.locator('[data-viz-panel-id], [data-viz-panel-key], [data-panelid], [data-panel-id]');
   await expect(roots.first().locator('canvas').first()).toBeVisible();
-  expect(await roots.count()).toBeLessThan(16);
+  // 12.4 creates panel roots lazily; newer layouts may expose all roots upfront.
+  if (grafanaVersion === '12.4.0') {
+    expect(await roots.count()).toBeLessThan(16);
+  }
 
   const inspectScroll = async () =>
     roots.first().evaluate((panel) => {
