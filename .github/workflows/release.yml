@@ -21,10 +21,20 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Require public signing configuration
+        shell: bash
+        env:
+          PUBLIC_SIGNING_ENABLED: ${{ vars.GRAFANA_PUBLIC_SIGNING_ENABLED }}
+          SIGNING_TOKEN: ${{ secrets.GRAFANA_ACCESS_POLICY_TOKEN }}
+        run: |
+          if [[ "$PUBLIC_SIGNING_ENABLED" != "true" || -z "$SIGNING_TOKEN" ]]; then
+            echo "Community release requires enabled public signing and a configured signing token."
+            exit 1
+          fi
+
       - uses: grafana/plugin-actions/build-plugin@build-plugin/v1.2.0
         with:
           node-version: '22'
-          # First-review archives are intentionally unsigned. Enable this repository variable only after
-          # Grafana grants the plugin a public Community signature level.
-          policy_token: ${{ vars.GRAFANA_PUBLIC_SIGNING_ENABLED == 'true' && secrets.GRAFANA_ACCESS_POLICY_TOKEN || '' }}
+          # Grafana has approved this plugin for public Community signing.
+          policy_token: ${{ secrets.GRAFANA_ACCESS_POLICY_TOKEN }}
           attestation: true

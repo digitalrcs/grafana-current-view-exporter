@@ -2,6 +2,19 @@
 
 ## Requested classification
 
+Grafana's reviewer has approved the plugin for signing. The next submission is the **v1.2.4 Community-signed release**; catalog publication still requires updating the existing submission with the signed archive.
+
+## Signed submission fields for v1.2.4
+
+- **Release:** <https://github.com/digitalrcs/grafana-current-view-exporter/releases/tag/v1.2.4>
+- **Plugin ZIP:** <https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.4/digitalrcs-currentviewexporter-app-1.2.4.zip>
+- **SHA1 file:** <https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.4/digitalrcs-currentviewexporter-app-1.2.4.zip.sha1>
+- **Source code:** <https://github.com/digitalrcs/grafana-current-view-exporter/tree/v1.2.4>
+
+Use the hash value from the checksum file in the SHA1 form field. Before submitting, verify the published ZIP includes a `MANIFEST.txt` with `signatureType: community`, the correct plugin ID and version, matching file hashes, and a passing published-release validator run. Do not modify signed files. The v1.2.3 URLs below are retained as historical initial-review references.
+
+## Community classification
+
 The intended classification is **Community**:
 
 - source is public;

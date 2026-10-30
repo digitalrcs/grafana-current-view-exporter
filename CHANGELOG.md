@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.4 - 2026-10-30
+
+- Prepare the first Community-signed release after Grafana's review approval.
+- Require signing configuration for release builds instead of silently producing an unsigned archive.
+- Update the Help build label and signed-release submission instructions; capture behavior is unchanged.
+- Include the previously merged brace-expansion security patch and plugin-update workflow repair.
+- Leave the reviewer's optional catalog installation-text and theme-token improvements for a future version.
+
 ## 1.2.3 - 2026-09-27
 
 - Expand the packaged catalog README with illustrated examples, installation and usage instructions, capture scope, privacy boundaries, and practical limitations.
