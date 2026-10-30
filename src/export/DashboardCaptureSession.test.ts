@@ -37,6 +37,7 @@ describe('DashboardCaptureSession traversal', () => {
     const adapter = new GrafanaAdapter();
     jest.spyOn(adapter, 'findDashboardScrollContainer').mockReturnValue(viewport);
     jest.spyOn(adapter, 'discoverMaterializedPanels').mockReturnValue([panel]);
+    jest.spyOn(adapter, 'isPanelInViewport').mockReturnValue(true);
     jest.spyOn(adapter, 'getPanelGridPosition').mockReturnValue(panel.gridPosition);
     const engine = new CaptureEngine();
     jest.spyOn(engine, 'capture').mockResolvedValue({
@@ -61,7 +62,13 @@ describe('DashboardCaptureSession traversal', () => {
       minX: 0,
       minY: 0,
     });
-    return { session: new DashboardCaptureSession(adapter, engine, stability, composer), viewport, compose };
+    return {
+      session: new DashboardCaptureSession(adapter, engine, stability, composer),
+      viewport,
+      compose,
+      adapter,
+      engine,
+    };
   }
 
   test('rejects stalled scrolling instead of composing a misleading partial image', async () => {
@@ -93,5 +100,26 @@ describe('DashboardCaptureSession traversal', () => {
     await jest.runAllTimersAsync();
     await expect(capture).resolves.toMatchObject({ panelCount: 1 });
     expect(compose).toHaveBeenCalledTimes(1);
+  });
+
+  test('defers offscreen shells until scrolling brings them into the viewport', async () => {
+    const { session, viewport, adapter, engine } = setup(false);
+    jest.mocked(adapter.isPanelInViewport).mockImplementation(() => viewport.scrollTop >= 450);
+    const capture = session.capture({ signal: new AbortController().signal, backgroundColor: '#000' });
+    await jest.advanceTimersByTimeAsync(140);
+    expect(engine.capture).not.toHaveBeenCalled();
+    await jest.runAllTimersAsync();
+    await expect(capture).resolves.toMatchObject({ panelCount: 1 });
+    expect(engine.capture).toHaveBeenCalledTimes(1);
+  });
+
+  test('rejects incomplete capture when a discovered shell never becomes visible', async () => {
+    const { session, adapter, compose } = setup(false);
+    jest.mocked(adapter.isPanelInViewport).mockReturnValue(false);
+    const capture = session.capture({ signal: new AbortController().signal, backgroundColor: '#000' });
+    const rejected = expect(capture).rejects.toThrow('Some discovered panels never became visible');
+    await jest.runAllTimersAsync();
+    await rejected;
+    expect(compose).not.toHaveBeenCalled();
   });
 });

@@ -4,6 +4,7 @@
 
 - Fix tall-dashboard capture on Grafana 12.4.0 by selecting the document scroller when body overflow is propagated to the viewport.
 - Reject stalled or incomplete dashboard traversal instead of reporting success with only the initially visible panels.
+- Defer offscreen panel shells until they enter the viewport; verify rendered chart traces in every cell of the regression PNG.
 - Add a fresh, unscrolled 16-panel TestData regression dashboard and verify all 16 captures, PNG height, and scroll restoration.
 - Pin Grafana 12.4.0 and 13.3.0 in the browser-test matrix in addition to dynamically resolved versions.
 - Keep the supported minimum at Grafana 12.4.0.

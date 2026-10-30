@@ -108,6 +108,11 @@ export class DashboardCaptureSession {
           if (snapshots.has(key) || failedKeys.has(key)) {
             continue;
           }
+          // Newer Grafana layouts expose offscreen panel shells before their
+          // visualization is mounted. Visit them before taking a snapshot.
+          if (!panel.element || !this.adapter.isPanelInViewport(panel.element, scrollContainer)) {
+            continue;
+          }
 
           try {
             emit('STABILIZING', panel.title);
@@ -163,6 +168,9 @@ export class DashboardCaptureSession {
       }
       if (!reachedBottom) {
         throw new Error('The entire dashboard could not be traversed. Capture is incomplete; no image was exported.');
+      }
+      if (discoveredKeys.size > snapshots.size + failedKeys.size) {
+        throw new Error('Some discovered panels never became visible. Capture is incomplete; no image was exported.');
       }
     } finally {
       scrollContainer.scrollTo({ top: originalScrollTop, left: originalScrollLeft, behavior: 'auto' });

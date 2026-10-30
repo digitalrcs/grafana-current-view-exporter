@@ -136,6 +136,15 @@ export class GrafanaAdapter {
     return rectToGridPosition(element, scrollContainer ?? this.findScrollableAncestor(element));
   }
 
+  isPanelInViewport(element: HTMLElement, scrollContainer: HTMLElement): boolean {
+    const rect = element.getBoundingClientRect();
+    const containerRect = scrollContainer.getBoundingClientRect();
+    const isDocument = scrollContainer === element.ownerDocument.scrollingElement;
+    const top = isDocument ? 0 : Math.max(0, containerRect.top);
+    const bottom = isDocument ? window.innerHeight : Math.min(window.innerHeight, containerRect.bottom);
+    return rect.width > 0 && rect.height > 0 && rect.bottom > top && rect.top < bottom;
+  }
+
   discoverDashboardPanels(context: PluginExtensionPanelContext): PanelDescriptor[] {
     const materialized = this.discoverMaterializedPanels();
     const byId = new Map(materialized.map((panel) => [String(panel.id), panel]));

@@ -59,6 +59,38 @@ test('captures all 16 lazy panels from a fresh unscrolled dashboard', async ({
   const bytes = await readFile((await download.path())!);
   expect(bytes.subarray(1, 4).toString()).toBe('PNG');
   expect(bytes.readUInt32BE(20)).toBeGreaterThan(2000);
+  // A full-height PNG can still contain empty lazy panel shells. Verify the
+  // TestData green trace exists in every cell, not just titles or panel borders.
+  const tracePixels = await page.evaluate(async (base64) => {
+    const image = new Image();
+    image.src = `data:image/png;base64,${base64}`;
+    await image.decode();
+    const canvas = document.createElement('canvas');
+    canvas.width = image.width;
+    canvas.height = image.height;
+    const context = canvas.getContext('2d')!;
+    context.drawImage(image, 0, 0);
+    return Array.from({ length: 16 }, (_, index) => {
+      const cellWidth = Math.floor(image.width / 2);
+      const cellHeight = Math.floor(image.height / 8);
+      const { data } = context.getImageData(
+        (index % 2) * cellWidth,
+        Math.floor(index / 2) * cellHeight + 45,
+        cellWidth,
+        cellHeight - 90
+      );
+      let green = 0;
+      for (let pixel = 0; pixel < data.length; pixel += 4) {
+        if (data[pixel + 1] > 70 && data[pixel + 1] > data[pixel] * 1.2 && data[pixel + 1] > data[pixel + 2] * 1.1) {
+          green++;
+        }
+      }
+      return green;
+    });
+  }, bytes.toString('base64'));
+  for (const [index, pixels] of tracePixels.entries()) {
+    expect(pixels, `Panel ${index + 1} must contain a rendered trace`).toBeGreaterThan(100);
+  }
   expect(runtimeErrors).toEqual([]);
   if (process.env.EXPORTER_QA_DIR) {
     await download.saveAs(join(process.env.EXPORTER_QA_DIR, 'tall-dashboard-export.png'));
