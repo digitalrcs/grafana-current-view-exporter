@@ -34,7 +34,7 @@ jobs:
 
       - uses: grafana/plugin-actions/build-plugin@build-plugin/v1.2.0
         with:
-          node-version: '22'
+          node-version: '24'
           # Grafana has approved this plugin for public Community signing.
           policy_token: ${{ secrets.GRAFANA_ACCESS_POLICY_TOKEN }}
           attestation: true

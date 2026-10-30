@@ -101,7 +101,7 @@ Apache-2.0. Developed by [DigitalRCS](https://www.digitalrcs.com).
 [![CI](https://github.com/digitalrcs/grafana-current-view-exporter/actions/workflows/ci.yml/badge.svg)](https://github.com/digitalrcs/grafana-current-view-exporter/actions/workflows/ci.yml)
 [![Release](https://github.com/digitalrcs/grafana-current-view-exporter/actions/workflows/release.yml/badge.svg)](https://github.com/digitalrcs/grafana-current-view-exporter/actions/workflows/release.yml)
 
-Plugin ID: `digitalrcs-currentviewexporter-app`. Node.js 22+ is required for development, not for end users installing the packaged app.
+Plugin ID: `digitalrcs-currentviewexporter-app`. Node.js 24.15+ is required for development and signing, not for end users installing the packaged app. CI uses Node.js 24 LTS.
 
 ```bash
 npm ci

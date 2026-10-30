@@ -19,4 +19,4 @@ jobs:
       - uses: grafana/plugin-actions/create-plugin-update@create-plugin-update/v2.0.2
         with:
           token: ${{ secrets.GH_PAT_TOKEN || github.token }}
-          node-version: '22'
+          node-version: '24'

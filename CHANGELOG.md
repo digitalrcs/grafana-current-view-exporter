@@ -6,6 +6,7 @@
 - Require signing configuration for release builds instead of silently producing an unsigned archive.
 - Update the Help build label and signed-release submission instructions; capture behavior is unchanged.
 - Include the previously merged brace-expansion security patch and plugin-update workflow repair.
+- Upgrade the signing tool to v4 and the CI/release runtime to Node 24; remove the vulnerable basic-ftp dependency and update source-map-js to 1.2.2 after security preflight.
 - Leave the reviewer's optional catalog installation-text and theme-token improvements for a future version.
 
 ## 1.2.3 - 2026-09-27
