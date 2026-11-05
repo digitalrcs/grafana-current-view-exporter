@@ -2,14 +2,16 @@
 
 ## Requested classification
 
-Grafana's reviewer approved Community signing, then found incomplete tall-dashboard captures on Grafana 12.4.0 during final review of v1.2.4. The next submission is **v1.2.5**, which fixes that regression without raising the minimum version. Publish and verify the signed archive before updating the existing submission; catalog approval remains a separate Grafana review action.
+The next submission is **v1.3.0**, adding browser-local PDF downloads alongside PNG and retaining the v1.2.5 tall-dashboard fixes and Grafana 12.4.0 minimum. Publish and verify the Community-signed archive before updating the existing submission; catalog approval remains a separate Grafana review action.
 
-## Signed submission fields for v1.2.5
+## Signed submission fields for v1.3.0
 
-- **Release:** <https://github.com/digitalrcs/grafana-current-view-exporter/releases/tag/v1.2.5>
-- **Plugin ZIP:** <https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.5/digitalrcs-currentviewexporter-app-1.2.5.zip>
-- **SHA1 file:** <https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.2.5/digitalrcs-currentviewexporter-app-1.2.5.zip.sha1>
-- **Source code:** <https://github.com/digitalrcs/grafana-current-view-exporter/tree/v1.2.5>
+- **Release:** <https://github.com/digitalrcs/grafana-current-view-exporter/releases/tag/v1.3.0>
+- **Plugin ZIP:** <https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.3.0/digitalrcs-currentviewexporter-app-1.3.0.zip>
+- **SHA1 file:** <https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.3.0/digitalrcs-currentviewexporter-app-1.3.0.zip.sha1>
+- **Source code:** <https://github.com/digitalrcs/grafana-current-view-exporter/tree/v1.3.0>
+
+PDF review: after capturing the current panel or dashboard, choose **Download PDF**. The same frozen capture is converted locally to image-based landscape A4 pages, with page numbers and panel-row-aware pagination. The 16-panel fixture produces four PDF pages at the regression viewport. PDF conversion does not traverse the dashboard again or call datasource/render endpoints. **Download PNG** remains available. PDF text and charts are raster snapshots, not searchable vector content; oversized rows scale intact to a page.
 
 Regression fixture: `provisioning/dashboards/current-view-exporter-tall.json` contains 16 TestData random-walk panels, two per row, grid height 9. Open it without scrolling, then choose **Extensions > Export current dashboard > Capture dashboard**. Expected: **Discovered 16; captured 16; failed 0**, a full-height PNG including panels 15 and 16, and the original scroll position restored. The browser regression runs on exact Grafana 12.4.0 and 13.3.0.
 

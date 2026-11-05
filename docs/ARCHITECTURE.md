@@ -19,7 +19,9 @@ The capture engine uses two ordered strategies:
 
 It is not assumed to solve WebGL. Grafana 13 introduces an alpha `PanelPlugin.setScreenshotImage()` override specifically for canvas/WebGL panels; third-party panels must opt in. Later phases must add blank/transparent detection and fail explicitly when neither an override nor a readable drawing buffer exists.
 
-For Phase 9 PDF composition, the planned library is `pdf-lib`: it operates entirely in the browser and directly embeds already-compressed PNG/JPEG bytes. It avoids a second HTML rendering stack and supports explicit page sizing/pagination. It is not installed in Phase 3 because no PDF code is shipped yet.
+PDF composition uses the MIT-licensed `pdf-lib` 1.17.1, dynamically imported only when Download PDF is selected. It embeds the already-frozen PNG once and references it from clipped landscape A4 pages; no second HTML rendering stack, dashboard traversal, network conversion service, or datasource request is involved. The PDF is cached for repeat downloads until the dialog closes.
+
+`DashboardCaptureSession` retains lightweight vertical panel bounds in final-image coordinates. `calculatePdfPages` merges overlapping spans and chooses page breaks outside panels. Oversized bands are scaled intact to one page. This preserves all pixels, including inter-panel gaps, without splitting charts. Page numbers are PDF text, while dashboard content remains a raster image. Existing PNG downscaling and readiness limitations still apply. Cancellation is checked between conversion stages/pages; PNG stays available on cancellation or failure.
 
 ## Panel discovery and progressive traversal
 

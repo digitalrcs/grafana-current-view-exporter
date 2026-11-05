@@ -1,6 +1,7 @@
 import { test, expect } from '@grafana/plugin-e2e';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { PDFDocument } from 'pdf-lib';
 
 test('captures all 16 lazy panels from a fresh unscrolled dashboard', async ({
   gotoDashboardPage,
@@ -94,5 +95,27 @@ test('captures all 16 lazy panels from a fresh unscrolled dashboard', async ({
   expect(runtimeErrors).toEqual([]);
   if (process.env.EXPORTER_QA_DIR) {
     await download.saveAs(join(process.env.EXPORTER_QA_DIR, 'tall-dashboard-export.png'));
+  }
+  const queryRequests: string[] = [];
+  page.on('request', (request) => {
+    if (/\/api\/ds\/query|\/render\//.test(request.url())) {
+      queryRequests.push(request.url());
+    }
+  });
+  const pdfDownloadPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Download PDF' }).click();
+  const pdfDownload = await pdfDownloadPromise;
+  expect(pdfDownload.suggestedFilename()).toBe('Current View Exporter Tall Review.pdf');
+  const pdfBytes = await readFile((await pdfDownload.path())!);
+  const pdf = await PDFDocument.load(pdfBytes);
+  expect(pdf.getPageCount()).toBe(4);
+  expect(pdf.getTitle()).toBe('Current View Exporter Tall Review');
+  expect(pdf.getPages().every((page) => page.getWidth() > page.getHeight())).toBe(true);
+  expect(queryRequests).toEqual([]);
+  expect(runtimeErrors).toEqual([]);
+  await expect(page.getByRole('button', { name: 'Download PNG' })).toBeEnabled();
+  if (process.env.EXPORTER_QA_DIR) {
+    await pdfDownload.saveAs(join(process.env.EXPORTER_QA_DIR, 'tall-dashboard-export.pdf'));
+    await page.screenshot({ path: join(process.env.EXPORTER_QA_DIR, 'pdf-download-ready.png') });
   }
 });

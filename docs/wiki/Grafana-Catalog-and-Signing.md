@@ -1,6 +1,15 @@
 # Grafana catalog and signing
 
-The project requests the free **Community** classification. It is Apache-2.0, public, free and open source, testable without external services, and contains no telemetry.
+The project has been approved for **Community** signing. It is Apache-2.0, public, free and open source, testable without external services, and contains no telemetry. Signing and successful automated validation do not themselves constitute catalog approval.
+
+## PDF release: v1.3.0
+
+- [Release](https://github.com/digitalrcs/grafana-current-view-exporter/releases/tag/v1.3.0)
+- [Plugin ZIP](https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.3.0/digitalrcs-currentviewexporter-app-1.3.0.zip)
+- [SHA1 file](https://github.com/digitalrcs/grafana-current-view-exporter/releases/download/v1.3.0/digitalrcs-currentviewexporter-app-1.3.0.zip.sha1)
+- [Tagged source](https://github.com/digitalrcs/grafana-current-view-exporter/tree/v1.3.0)
+
+This version adds image-based, landscape A4 PDF downloads alongside PNG. Both formats reuse the same frozen capture. Use the checksum file's hash value in Grafana's SHA1 field, and confirm the release validator passed before submitting. See the [submission guide](https://github.com/digitalrcs/grafana-current-view-exporter/blob/v1.3.0/docs/CATALOG_SUBMISSION.md) for PDF and tall-dashboard reviewer checks.
 
 ## Update the existing submission
 

@@ -195,6 +195,10 @@ export class DashboardCaptureSession {
         width: image.width,
         height: image.height,
         outputScale: image.scale,
+        panelBounds: snapshots.values().map((panel) => ({
+          y: Math.round((panel.gridPosition.y - image.minY) * image.scale),
+          height: Math.max(1, Math.round(panel.gridPosition.height * image.scale)),
+        })),
         panelCount: snapshots.size,
         snapshotBytes,
         failures,

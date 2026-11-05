@@ -61,6 +61,11 @@ export interface DashboardCaptureProgress {
   currentPanel?: string;
 }
 
+export interface ImagePanelBounds {
+  y: number;
+  height: number;
+}
+
 export interface DashboardCaptureResult {
   blob: Blob;
   width: number;
@@ -69,6 +74,7 @@ export interface DashboardCaptureResult {
   panelCount: number;
   snapshotBytes: number;
   failures: PanelCaptureFailure[];
+  panelBounds?: ImagePanelBounds[];
 }
 
 export interface PanelCaptureEngine {

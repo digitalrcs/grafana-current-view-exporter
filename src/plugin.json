@@ -5,8 +5,8 @@
   "id": "digitalrcs-currentviewexporter-app",
   "preload": true,
   "info": {
-    "keywords": ["dashboard", "export", "png", "snapshot", "browser"],
-    "description": "Export the current dashboard as a browser-local PNG without calling render endpoints or deliberately refreshing datasource queries.",
+    "keywords": ["dashboard", "export", "png", "pdf", "snapshot", "browser"],
+    "description": "Export the current dashboard as a browser-local PNG or PDF without calling render endpoints or deliberately refreshing datasource queries.",
     "author": {
       "name": "DigitalRCS",
       "url": "https://www.digitalrcs.com"

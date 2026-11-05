@@ -32,7 +32,7 @@ The self-contained dashboard exercises Grafana Time series, Stat, Bar gauge, and
 
 ## Known limitations
 
-- PNG is the only implemented output format in the current release.
+- PNG and image-based PDF are implemented in 1.3.0. PDF uses landscape A4 pagination, keeps overlapping panel rows together, and scales oversized rows to fit. PDF text/charts are not searchable or editable.
 - Browser canvas limits vary. The exporter conservatively limits the final image to 16,384 pixels per dimension and 64 million pixels, scaling uniformly when needed.
 - Auto-refresh is not paused through an unsupported/private API.
 - Lazy materialization may cause Grafana's first normal query for a panel that was not previously initialized.

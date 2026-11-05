@@ -10,6 +10,7 @@
 
 - Current-panel PNG
 - Dashboard PNG
+- Current-panel and paginated dashboard PDF (1.3.0): landscape A4, image-based, no extra capture/query
 - Single-pass capture for dashboards that fit on screen (fixed in v1.2.2)
 - Progressive scrolling
 - Layout-preserving bounded composition
@@ -19,7 +20,7 @@
 ## Not yet implemented
 
 - JPEG
-- PDF and pagination
+- PDF paper-size/orientation controls and searchable text
 - WebGL blank-image detection
 - Auto-refresh pause/change diagnostics
 - Toolbar-level extension entry point

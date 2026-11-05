@@ -1,6 +1,6 @@
 # Grafana Current View Exporter
 
-Turn the dashboard you are viewing into a shareable PNG, directly from your Grafana browser session. Export one panel or combine the dashboard's panels into a single image without setting up a separate rendering service.
+Turn the dashboard you are viewing into a shareable PNG or PDF, directly from your Grafana browser session. Export one panel or combine the dashboard's panels without setting up a separate rendering service.
 
 Use it to capture an investigation, attach visual evidence to a support ticket, prepare a presentation, or share a dashboard view during a handover. The result is an image of the rendered panels, not a data export or an interactive dashboard.
 
@@ -35,7 +35,7 @@ See the [installation guide](https://github.com/digitalrcs/grafana-current-view-
 2. Expand the sections you want to include and wait for charts, tables, and other panel content to finish rendering.
 3. Open a panel's menu and select **Extensions → Export current dashboard**.
 4. Choose **Capture current panel** for that panel, or **Capture dashboard** for the dashboard's panels. Select **Help** for behavior and status details.
-5. When **PNG ready** appears, check any warnings and select **Download PNG**.
+5. When **Capture ready** appears, check any warnings and select **Download PNG** or **Download PDF**.
 
 ![Compact export dialog with Help, Cancel, Capture current panel, and Capture dashboard controls](https://raw.githubusercontent.com/digitalrcs/grafana-current-view-exporter/main/src/img/export-dialog-compact.png)
 
@@ -49,6 +49,16 @@ The dashboard completion dialog reports the image dimensions, captured panel cou
 
 The filename is based on the selected panel or dashboard title. The screenshots above show the export controls and completion state; the first image on this page is the downloaded PNG itself.
 
+## PDF output (1.3.0)
+
+PDF download converts the same frozen PNG capture in your browser; it does not recapture, scroll, reload, or query the dashboard. You can download both formats from one capture. The PDF library is bundled locally and loads only when requested; no conversion service receives your dashboard.
+
+PDFs use **landscape A4 pages**, margins, and page numbers. Dashboard rows stay together at page breaks. Overlapping rows are grouped so no panel is cut in half; an oversized row or single tall panel is scaled to fit one page. There is no paper-size selector in this version.
+
+PDF charts and text are embedded images, **not searchable text, editable charts, or query-data exports**. PDFs inherit the PNG's capture failures, resolution limits, and any downscaling warning. Review every page before sharing. **Cancel PDF** stops conversion while preserving the PNG; a conversion error also leaves PNG download available.
+
+The screenshots above illustrate the earlier PNG workflow; the current completion dialog offers both download buttons.
+
 ## How capture behaves
 
 **Current-panel capture** uses the selected panel's rendered content. **Dashboard capture** scrolls through the dashboard, captures panels as they become available, and combines their images into one PNG.
@@ -59,7 +69,7 @@ It is not a guarantee of zero network traffic or a single instant in time. Grafa
 
 For a more consistent image, let panels settle and manually turn off automatic refresh while exporting, if appropriate for your workflow. The exporter does not pause refresh for you.
 
-## What is included in the PNG?
+## What is included in the export?
 
 The dashboard image contains the **captured panel areas and their layout**. It does not add Grafana's navigation, dashboard heading, variable controls, or time picker around the panels.
 
@@ -67,7 +77,7 @@ Capture reflects the content rendered inside each panel. It does not expand coll
 
 ## Compatibility and limitations
 
-- **PNG output only.** There is no PDF, JPEG, scheduled report, or server-side export workflow.
+- **PNG and image-based PDF output.** There is no JPEG, scheduled report, or server-side export workflow.
 - **Panel rendering matters.** The plugin uses Grafana's panel screenshot service when available, with a DOM-based fallback. Some third-party panels, WebGL content, cross-origin images, or custom fonts may not capture as expected.
 - **Large dashboards may be reduced in size.** Final images are automatically downscaled when they exceed the composer's browser-canvas limits. A warning identifies that reduction; available browser memory still matters.
 - **Capture is progressive, not atomic.** Different panels can be captured at different moments. Inspect the result when working with rapidly changing data.
@@ -79,7 +89,7 @@ See [compatibility and limitations](https://github.com/digitalrcs/grafana-curren
 
 Captured panel images are processed and composed in your browser. This plugin has no backend or telemetry and does not upload captured images to an external rendering service.
 
-Normal Grafana, data source, and panel-asset requests can still occur. Browser-local image generation does not make the dashboard offline. Downloaded PNGs may contain sensitive information; review them and follow your organization's sharing policy.
+Normal Grafana, data source, and panel-asset requests can still occur. Browser-local generation does not make the dashboard offline. Downloaded PNGs and PDFs may contain sensitive information; review them and follow your organization's sharing policy.
 
 ## Documentation and support
 
