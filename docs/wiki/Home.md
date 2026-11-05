@@ -1,6 +1,6 @@
 # Grafana Current View Exporter
 
-Grafana Current View Exporter creates a PNG from the dashboard visual state already present in the user's browser session.
+Grafana Current View Exporter creates a PNG or image-based PDF from the dashboard visual state captured in the user's browser session. PDF export in 1.3.0 uses landscape A4 pages and reuses the frozen PNG without another capture.
 
 It is designed for dashboards whose datasource queries are expensive or slow. Capturing an already-rendered panel does not call Grafana render endpoints, reload the dashboard, refresh it, or invoke datasource APIs directly.
 

@@ -4,7 +4,7 @@ import { Alert, Button, IconButton, Modal, Spinner } from '@grafana/ui';
 import { CaptureEngine } from '../capture/CaptureEngine';
 import { DashboardCaptureSession } from '../export/DashboardCaptureSession';
 import { ObservablePanelStabilityDetector } from '../export/PanelStabilityDetector';
-import type { DashboardCaptureProgress, PanelCaptureStatus } from '../export/types';
+import type { DashboardCaptureProgress, ImagePanelBounds, PanelCaptureStatus } from '../export/types';
 import { GrafanaAdapter } from '../grafana/GrafanaAdapter';
 import { PanelDiscovery } from '../grafana/PanelDiscovery';
 
@@ -20,17 +20,18 @@ interface ExportResult {
   height: number;
   message: string;
   warning?: string;
+  panelBounds?: ImagePanelBounds[];
 }
 
 const STABILIZATION_MS = 400;
-const EXPORTER_BUILD = '1.2.5';
+const EXPORTER_BUILD = '1.3.0';
 
-function safeFilename(value: string): string {
+function safeFilename(value: string, format: 'png' | 'pdf'): string {
   const sanitized = value
     .replace(/[<>:"/\\|?*\u0000-\u001F]/g, '-')
     .replace(/\s+/g, ' ')
     .trim();
-  return `${sanitized || 'grafana-dashboard'}.png`;
+  return `${sanitized || 'grafana-dashboard'}.${format}`;
 }
 
 export default function ExportDialog({ context, onDismiss }: Props) {
@@ -42,6 +43,9 @@ export default function ExportDialog({ context, onDismiss }: Props) {
   );
   const controllerRef = useRef<AbortController>();
   const objectUrlRef = useRef<string>();
+  const pdfRef = useRef<Blob>();
+  const [pdfBusy, setPdfBusy] = useState(false);
+  const [pdfError, setPdfError] = useState<string>();
   const [status, setStatus] = useState<PanelCaptureStatus>('DISCOVERED');
   const [progress, setProgress] = useState<DashboardCaptureProgress>();
   const [result, setResult] = useState<ExportResult>();
@@ -64,6 +68,8 @@ export default function ExportDialog({ context, onDismiss }: Props) {
     setError(undefined);
     setResult(undefined);
     setProgress(undefined);
+    pdfRef.current = undefined;
+    setPdfError(undefined);
     return controller;
   };
 
@@ -138,6 +144,7 @@ export default function ExportDialog({ context, onDismiss }: Props) {
         height: captured.height,
         message: `${captured.panelCount} panel${captured.panelCount === 1 ? '' : 's'}, ${Math.ceil(captured.blob.size / 1024)} KiB`,
         warning: [failureWarning, scaleWarning].filter(Boolean).join(' ') || undefined,
+        panelBounds: captured.panelBounds,
       });
       setStatus('CAPTURED');
     } catch (captureError) {
@@ -151,18 +158,18 @@ export default function ExportDialog({ context, onDismiss }: Props) {
     }
   };
 
-  const download = () => {
+  const download = (blob: Blob, format: 'png' | 'pdf') => {
     if (!result) {
       return;
     }
     if (objectUrlRef.current) {
       URL.revokeObjectURL(objectUrlRef.current);
     }
-    const url = URL.createObjectURL(result.blob);
+    const url = URL.createObjectURL(blob);
     objectUrlRef.current = url;
     const anchor = document.createElement('a');
     anchor.href = url;
-    anchor.download = safeFilename(result.title);
+    anchor.download = safeFilename(result.title, format);
     anchor.click();
     window.setTimeout(() => {
       URL.revokeObjectURL(url);
@@ -170,6 +177,34 @@ export default function ExportDialog({ context, onDismiss }: Props) {
         objectUrlRef.current = undefined;
       }
     }, 0);
+  };
+
+  const downloadPdf = async () => {
+    if (!result || pdfBusy) {
+      return;
+    }
+    const controller = new AbortController();
+    controllerRef.current = controller;
+    setPdfBusy(true);
+    setPdfError(undefined);
+    try {
+      if (!pdfRef.current) {
+        // Load PDF code only on request; conversion reads the frozen PNG only.
+        const { composePdf } = await import('../export/PdfComposer');
+        pdfRef.current = await composePdf({ ...result, signal: controller.signal });
+      }
+      if (!controller.signal.aborted) {
+        download(pdfRef.current, 'pdf');
+      }
+    } catch (error) {
+      if (!controller.signal.aborted) {
+        setPdfError(error instanceof Error ? error.message : 'PDF creation failed. You can still download the PNG.');
+      }
+    } finally {
+      if (!controller.signal.aborted) {
+        setPdfBusy(false);
+      }
+    }
   };
 
   const busy = ['MATERIALIZING', 'QUERY_RUNNING', 'RENDERING', 'STABILIZING', 'CAPTURING'].includes(status);
@@ -182,6 +217,11 @@ export default function ExportDialog({ context, onDismiss }: Props) {
           <p>
             <strong>Current panel</strong> captures only the rendered panel. <strong>Dashboard</strong> progressively
             scrolls through the current dashboard and combines its panels into one PNG.
+          </p>
+          <p>
+            Download PNG or PDF from the same capture. PDFs use landscape A4 pages with panel rows kept together;
+            unusually tall rows are scaled to fit. PDF charts and text are snapshots, not editable or searchable data.
+            Creating a PDF does not capture the dashboard again.
           </p>
           <p>
             The exporter does not call a render endpoint, reload, refresh, or invoke datasource APIs. Grafana may run an
@@ -217,10 +257,20 @@ export default function ExportDialog({ context, onDismiss }: Props) {
         </Alert>
       ) : null}
       {result ? (
-        <Alert title="PNG ready" severity="success">
+        <Alert title="Capture ready" severity="success">
           {result.width} × {result.height}px, {result.message}
           {result.warning ? ` ${result.warning}` : ''}
         </Alert>
+      ) : null}
+      {pdfError ? (
+        <Alert title="PDF creation failed" severity="error">
+          {pdfError}
+        </Alert>
+      ) : null}
+      {pdfBusy ? (
+        <p role="status">
+          <Spinner inline /> Preparing PDF...
+        </p>
       ) : null}
       <Modal.ButtonRow>
         <IconButton
@@ -230,8 +280,19 @@ export default function ExportDialog({ context, onDismiss }: Props) {
           aria-controls="current-view-export-help"
           onClick={() => setShowHelp((visible) => !visible)}
         />
-        <Button variant="secondary" fill="outline" onClick={busy ? () => controllerRef.current?.abort() : onDismiss}>
-          {busy ? 'Cancel capture' : 'Cancel'}
+        <Button
+          variant="secondary"
+          fill="outline"
+          onClick={
+            busy || pdfBusy
+              ? () => {
+                  controllerRef.current?.abort();
+                  setPdfBusy(false);
+                }
+              : onDismiss
+          }
+        >
+          {pdfBusy ? 'Cancel PDF' : busy ? 'Cancel capture' : 'Cancel'}
         </Button>
         {!busy && !result ? (
           <Button variant="secondary" onClick={captureCurrentPanel}>
@@ -239,7 +300,16 @@ export default function ExportDialog({ context, onDismiss }: Props) {
           </Button>
         ) : null}
         {!busy && !result ? <Button onClick={captureEntireDashboard}>Capture dashboard</Button> : null}
-        {result ? <Button onClick={download}>Download PNG</Button> : null}
+        {result ? (
+          <Button variant="secondary" onClick={() => download(result.blob, 'png')}>
+            Download PNG
+          </Button>
+        ) : null}
+        {result ? (
+          <Button disabled={pdfBusy} onClick={downloadPdf}>
+            Download PDF
+          </Button>
+        ) : null}
       </Modal.ButtonRow>
     </div>
   );

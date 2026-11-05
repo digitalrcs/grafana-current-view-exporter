@@ -20,6 +20,12 @@ Dashboards that fit on screen are captured in a single pass. Version 1.2.2 fixes
 
 The result reports discovered, captured, and failed panels. One panel failure does not terminate the remaining capture.
 
-## Large dashboards
+## Download PNG or PDF
+
+After **Capture ready**, download either or both formats from the same capture. PDF conversion is entirely browser-local and does not repeat capture or datasource queries. PDFs use landscape A4 pages with page numbers. Page breaks keep panel rows together; unusually tall or overlapping rows are scaled intact to one page. Charts and text are raster images, not searchable text or editable data.
+
+Use **Cancel PDF** to stop conversion without losing the PNG. If conversion fails, PNG download remains available. Inspect all PDF pages before sharing, including any capture or downscaling warnings.
+
+## Image size limits
 
 The exporter stores panel snapshots as compressed PNG blobs. If the final dashboard would exceed conservative browser canvas limits, it is uniformly scaled down and the completion message reports the scale.

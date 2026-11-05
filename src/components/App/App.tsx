@@ -27,7 +27,7 @@ function App({ meta }: AppRootProps) {
           </li>
           <li>
             Choose <strong>Capture current panel</strong> or <strong>Capture dashboard</strong>, then select{' '}
-            <strong>Download PNG</strong> when the image is ready.
+            <strong>Download PNG</strong> or <strong>Download PDF</strong> when the capture is ready.
           </li>
         </ol>
         <div className={galleryStyle}>
@@ -47,7 +47,7 @@ function App({ meta }: AppRootProps) {
               width={1280}
               height={720}
             />
-            <figcaption>Download the PNG after capture finishes. Check any reported panel failures.</figcaption>
+            <figcaption>Download PNG or PDF after capture finishes. Check any reported panel failures.</figcaption>
           </figure>
         </div>
         <h2>What to expect</h2>
@@ -57,7 +57,9 @@ function App({ meta }: AppRootProps) {
         </p>
         <p>
           The exporter does not reload or refresh the dashboard or call datasource APIs. Grafana may run an initial
-          query when scrolling loads a panel for the first time. PNG is the supported download format.
+          query when scrolling loads a panel for the first time. Both PNG and PDF use the same frozen capture. PDFs use
+          landscape A4 pages, keeping panel rows together where possible. Unusually tall rows are scaled to fit. PDF
+          charts and text are images, not searchable or editable data.
         </p>
         <a href="https://github.com/digitalrcs/grafana-current-view-exporter/wiki">Documentation and troubleshooting</a>
       </div>

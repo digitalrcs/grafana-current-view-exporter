@@ -1,6 +1,7 @@
 import { test, expect } from '@grafana/plugin-e2e';
-import { stat } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
 import { join } from 'node:path';
+import { PDFDocument } from 'pdf-lib';
 
 test.setTimeout(60_000);
 
@@ -79,6 +80,16 @@ test('captures an already-rendered panel without another datasource query', asyn
   await expect(page.getByTestId('capture-state')).toHaveText('CAPTURED', { timeout: 30_000 });
 
   expect(datasourceRequests).toHaveLength(0);
+  const pdfPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Download PDF' }).click();
+  const pdfDownload = await pdfPromise;
+  const bytes = await readFile((await pdfDownload.path())!);
+  expect((await PDFDocument.load(bytes)).getPageCount()).toBe(1);
+  expect(pdfDownload.suggestedFilename()).toMatch(/\.pdf$/);
+  expect(datasourceRequests).toHaveLength(0);
+  if (process.env.EXPORTER_QA_DIR) {
+    await pdfDownload.saveAs(join(process.env.EXPORTER_QA_DIR, 'current-panel-export.pdf'));
+  }
 });
 
 test('progressively captures the entire dashboard, restores scroll, and downloads PNG', async ({
@@ -119,7 +130,7 @@ test('progressively captures the entire dashboard, restores scroll, and download
 
   await page.getByRole('button', { name: 'Capture dashboard' }).click();
   await expect(page.getByTestId('capture-state')).toHaveText('CAPTURED', { timeout: 60_000 });
-  await expect(page.getByRole('status', { name: 'PNG ready' })).toContainText('panels');
+  await expect(page.getByRole('status', { name: 'Capture ready' })).toContainText('panels');
   await expect(page.getByTestId('dashboard-capture-progress')).toContainText('Discovered 4; captured 4; failed 0');
   await expect.poll(() => dashboardScrollContainer.evaluate((element) => element.scrollTop)).toBe(originalScrollTop);
 

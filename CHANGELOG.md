@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.3.0 - 2026-11-05
+
+- Add browser-local PDF download alongside PNG for current-panel and whole-dashboard captures.
+- Reuse the frozen capture without another dashboard traversal or datasource request.
+- Paginate landscape A4 output at panel-row boundaries and scale oversized rows intact; include page numbers.
+- Load pdf-lib only when PDF is requested, support cancellation, and retain PNG download if PDF conversion fails.
+- PDFs are image-based snapshots and inherit existing capture-readiness and image-resolution limitations.
+
 ## 1.2.5 - 2026-10-30
 
 - Fix tall-dashboard capture on Grafana 12.4.0 by selecting the document scroller when body overflow is propagated to the viewport.
